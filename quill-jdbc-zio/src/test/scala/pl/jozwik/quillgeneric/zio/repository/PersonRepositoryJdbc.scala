@@ -6,7 +6,6 @@ import pl.jozwik.quillgeneric.model.Person
 import pl.jozwik.quillgeneric.model.PersonId
 import io.getquill.context.qzio.ZioJdbcContext
 import pl.jozwik.quillgeneric.zio.*
-import pl.jozwik.quillgeneric.zio.ZioJdbcRepository.*
 import zio.interop.catz.*
 
 final class PersonRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(

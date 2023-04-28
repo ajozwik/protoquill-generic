@@ -2,39 +2,36 @@ package pl.jozwik.quillgeneric.zio.repository
 
 import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.model.Configuration
-import pl.jozwik.quillgeneric.model.ConfigurationId
 import io.getquill.context.qzio.ZioJdbcContext
+import pl.jozwik.quillgeneric.model.{ Sale, SaleId }
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
 
-final class ConfigurationRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](
-    protected val context: C
-)(implicit
-    meta: SchemaMeta[Configuration]
-) extends ZioJdbcRepository[ConfigurationId, Configuration, C, Dialect, Naming] {
+final class SaleRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
+    implicit meta: SchemaMeta[Sale]
+) extends ZioJdbcRepository[SaleId, Sale, C, Dialect, Naming] {
 
   import context.*
 
   protected def quoteQuery = quote {
-    query[Configuration]
+    query[Sale]
   }
 
-  protected inline def find(id: ConfigurationId): Quoted[EntityQuery[Configuration]] = quote {
+  protected inline def find(id: SaleId): Quoted[EntityQuery[Sale]] = quote {
     quoteQuery.filter(_.id == lift(id))
   }
 
-  override def all: QIO[Seq[Configuration]] =
+  override def all: QIO[Seq[Sale]] =
     run(quoteQuery)
 
-  override def create(entity: Configuration): QIO[ConfigurationId] =
+  override def create(entity: Sale): QIO[SaleId] =
     for {
       _ <- run(quoteQuery.insertValue(lift(entity)))
     } yield {
       entity.id
     }
 
-  override def createOrUpdate(entity: Configuration): QIO[ConfigurationId] =
+  override def createOrUpdate(entity: Sale): QIO[SaleId] =
     context.transaction {
       for {
         el <- run(find(entity.id).updateValue(lift(entity)))
@@ -48,17 +45,17 @@ final class ConfigurationRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingS
       }
     }
 
-  override def read(id: ConfigurationId): QIO[Option[Configuration]] =
+  override def read(id: SaleId): QIO[Option[Sale]] =
     for {
       seq <- run(find(id))
     } yield {
       seq.headOption
     }
 
-  override def update(entity: Configuration): QIO[Long] =
+  override def update(entity: Sale): QIO[Long] =
     run(find(entity.id).updateValue(lift(entity)))
 
-  override def delete(id: ConfigurationId): QIO[Long] =
+  override def delete(id: SaleId): QIO[Long] =
     run(find(id).delete)
 
   override def deleteAll(): QIO[Long] =

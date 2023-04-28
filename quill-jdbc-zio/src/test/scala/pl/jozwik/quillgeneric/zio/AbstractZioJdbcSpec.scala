@@ -5,7 +5,7 @@ import io.getquill.jdbczio.Quill
 import io.getquill.{ H2Dialect, H2ZioJdbcContext, NamingStrategy, autoQuote }
 import org.scalatest.BeforeAndAfterAll
 import pl.jozwik.quillgeneric.AbstractSpec
-import pl.jozwik.quillgeneric.zio.ZioJdbcRepository.QIO
+import pl.jozwik.quillgeneric.zio.QIO
 import zio.{ FiberRefs, Runtime, RuntimeFlags, Tag, Unsafe, ZEnvironment, ZIO, ZLayer }
 
 import javax.sql.DataSource

@@ -1,21 +1,20 @@
 package pl.jozwik.quillgeneric.zio
 
-import io.getquill.context.sql.idiom.SqlIdiom
 import io.getquill.*
 import io.getquill.context.jdbc.{ JdbcContextTypes, ObjectGenericTimeDecoders, ObjectGenericTimeEncoders }
 import io.getquill.context.qzio.ZioJdbcContext
+import io.getquill.context.sql.idiom.SqlIdiom
+import pl.ds.quillgeneric.monad.{ BaseRepositoryMonadWithTransaction, JdbcRepositoryMonad, JdbcRepositoryMonadWithGeneratedId }
 import pl.jozwik.quillgeneric.repository.*
-import pl.jozwik.quillgeneric.zio.ZioJdbcRepository.{ QIO, ZioJdbcContextWithDateQuotes }
+import pl.jozwik.quillgeneric.zio.{ QIO, ZioJdbcContextWithDateQuotes }
 import zio.ZIO
 
 import javax.sql.DataSource
-import pl.ds.quillgeneric.monad.{ BaseRepositoryMonadWithTransaction, JdbcRepositoryMonad, JdbcRepositoryMonadWithGeneratedId }
-object ZioJdbcRepository {
-  type QIO[T] = ZIO[DataSource, Throwable, T]
-  type ZioJdbcContextWithDateQuotes[+Dialect <: SqlIdiom, +Naming <: NamingStrategy] = ZioJdbcContext[Dialect, Naming]
-    with ObjectGenericTimeDecoders
-    with ObjectGenericTimeEncoders
-}
+
+type QIO[T] = ZIO[DataSource, Throwable, T]
+type ZioJdbcContextWithDateQuotes[+Dialect <: SqlIdiom, +Naming <: NamingStrategy] = ZioJdbcContext[Dialect, Naming]
+  with ObjectGenericTimeDecoders
+  with ObjectGenericTimeEncoders
 
 trait ZioJdbcRepositoryWithTransactionWithGeneratedId[K, T <: WithId[K], C <: ZioJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
   extends JdbcRepositoryMonadWithGeneratedId[QIO, K, T, C, D, N, Long]
