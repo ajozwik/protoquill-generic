@@ -8,10 +8,6 @@
 	</appender>
 
 	<logger name="com.zaxxer" level="INFO" />
-	<logger name="org.cassandra" level="INFO" />
-	<logger name="org.apache.cassandra" level="INFO" />
-
-
 
 	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
