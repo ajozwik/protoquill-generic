@@ -1,20 +1,17 @@
 package pl.jozwik.quillgeneric.zio.repository
 
 import io.getquill.*
-import io.getquill.context.qzio.ZioJdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.model.{ Person, PersonId }
-import pl.jozwik.quillgeneric.repository.RepositoryWithTransactionWithGeneratedId
+import pl.jozwik.quillgeneric.model.Person
+import pl.jozwik.quillgeneric.model.PersonId
+import io.getquill.context.qzio.ZioJdbcContext
+import pl.jozwik.quillgeneric.zio.*
 import pl.jozwik.quillgeneric.zio.ZioJdbcRepository.*
-import pl.jozwik.quillgeneric.zio.ZioJdbcRepositoryWithTransactionWithGeneratedId
 import zio.interop.catz.*
-final class PersonCustomRepositoryJdbc[+D <: SqlIdiom, +N <: NamingStrategy, C <: ZioJdbcContextWithDataQuotes[D, N]](context: C)(implicit
-    meta: SchemaMeta[Person]
-) extends PersonCustomRepositoryQuill[D, N, C](context)
 
-trait PersonCustomRepositoryQuill[+D <: SqlIdiom, +N <: NamingStrategy, C <: ZioJdbcContextWithDataQuotes[D, N]](protected val context: C)(implicit
-    meta: SchemaMeta[Person]
-) extends ZioJdbcRepositoryWithTransactionWithGeneratedId[PersonId, Person, C, D, N] {
+final class PersonRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
+    implicit meta: SchemaMeta[Person]
+) extends ZioJdbcRepositoryWithTransactionWithGeneratedId[PersonId, Person, C, Dialect, Naming] {
 
   import context.*
 
@@ -22,7 +19,7 @@ trait PersonCustomRepositoryQuill[+D <: SqlIdiom, +N <: NamingStrategy, C <: Zio
     query[Person]
   }
 
-  protected inline def find(id: PersonId) = quote {
+  protected inline def find(id: PersonId): Quoted[EntityQuery[Person]] = quote {
     quoteQuery.filter(_.id == lift(id))
   }
 
@@ -37,7 +34,7 @@ trait PersonCustomRepositoryQuill[+D <: SqlIdiom, +N <: NamingStrategy, C <: Zio
       run(quoteQuery.insertValue(lift(entity)).returning(_.id))
     }
 
-  override final def createOrUpdate(entity: Person, generateId: Boolean = true): QIO[PersonId] = {
+  override def createOrUpdate(entity: Person, generateId: Boolean = true): QIO[PersonId] = {
     inTransaction {
       for {
         el <- run(find(entity.id).updateValue(lift(entity)))

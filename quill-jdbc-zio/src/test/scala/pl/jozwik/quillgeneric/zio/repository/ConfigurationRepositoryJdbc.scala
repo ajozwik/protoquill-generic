@@ -1,18 +1,19 @@
 package pl.jozwik.quillgeneric.zio.repository
 
 import io.getquill.*
-import io.getquill.context.qzio.ZioJdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.model.{ Configuration, ConfigurationId }
-import pl.jozwik.quillgeneric.zio.ZioJdbcRepository
+import pl.jozwik.quillgeneric.model.Configuration
+import pl.jozwik.quillgeneric.model.ConfigurationId
+import io.getquill.context.qzio.ZioJdbcContext
+import pl.jozwik.quillgeneric.zio.*
 import pl.jozwik.quillgeneric.zio.ZioJdbcRepository.*
 import zio.interop.catz.*
-final class ConfigurationRepositoryJdbc[+D <: SqlIdiom, +N <: NamingStrategy, C <: ZioJdbcContextWithDataQuotes[D, N]](context: C)(implicit
+
+final class ConfigurationRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](
+    protected val context: C
+)(implicit
     meta: SchemaMeta[Configuration]
-) extends ConfigurationRepositoryQuill[D, N, C](context)
-trait ConfigurationRepositoryQuill[+D <: SqlIdiom, +N <: NamingStrategy, C <: ZioJdbcContextWithDataQuotes[D, N]](protected val context: C)(implicit
-    meta: SchemaMeta[Configuration]
-) extends ZioJdbcRepository[ConfigurationId, Configuration, C, D, N] {
+) extends ZioJdbcRepository[ConfigurationId, Configuration, C, Dialect, Naming] {
 
   import context.*
 
