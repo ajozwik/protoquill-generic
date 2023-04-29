@@ -1,4 +1,4 @@
 package pl.jozwik.quillgeneric.zio
 
 class ZioSpec extends ConfigurationSuite
-  with PersonCustomRepositorySuite
+  with PersonRepositorySuite

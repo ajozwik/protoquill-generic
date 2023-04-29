@@ -1,4 +1,4 @@
-package pl.ds.quillgeneric.monad
+package pl.jozwik.quillgeneric.monad
 
 import cats.Monad
 

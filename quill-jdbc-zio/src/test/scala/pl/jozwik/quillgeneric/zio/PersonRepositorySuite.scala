@@ -4,7 +4,7 @@ import pl.jozwik.quillgeneric.model.{ Person, PersonId }
 import pl.jozwik.quillgeneric.zio.repository.PersonRepositoryJdbc
 import zio.Unsafe
 import io.getquill.*
-trait PersonCustomRepositorySuite extends AbstractZioJdbcSpec {
+trait PersonRepositorySuite extends AbstractZioJdbcSpec {
   "PersonCustomRepository " should {
     "Call all operations on Person with auto generated id and custom field" in {
       implicit val meta: SchemaMeta[Person] = schemaMeta[Person]("Person3", columns => columns.birthDate -> "dob")
@@ -14,8 +14,8 @@ trait PersonCustomRepositorySuite extends AbstractZioJdbcSpec {
       unsafe {
         repository.all
       } shouldBe empty
-      val personId      = repository.create(person).runSyncUnsafe()
-      val createdPatron = repository.read(personId).runSyncUnsafe().getOrElse(fail())
+      val personId      = repository.create(person).runUnsafe()
+      val createdPatron = repository.read(personId).runUnsafe().getOrElse(fail())
       val task = repository.inTransaction {
         for {
           u   <- repository.update(createdPatron)
@@ -24,19 +24,19 @@ trait PersonCustomRepositorySuite extends AbstractZioJdbcSpec {
           (u, all)
         }
       }
-      task.runSyncUnsafe() shouldBe ((1, Seq(createdPatron)))
+      task.runUnsafe() shouldBe ((1, Seq(createdPatron)))
       val newBirthDate = createdPatron.birthDate.minusYears(1)
       val modified     = createdPatron.copy(birthDate = newBirthDate)
-      repository.update(modified).runSyncUnsafe() shouldBe 1
-      repository.createOrUpdate(modified).runSyncUnsafe() shouldBe modified.id
-      repository.createOrUpdateAndRead(modified).runSyncUnsafe() shouldBe modified
-      repository.read(createdPatron.id).runSyncUnsafe().map(_.birthDate) shouldBe Option(newBirthDate)
+      repository.update(modified).runUnsafe() shouldBe 1
+      repository.createOrUpdate(modified).runUnsafe() shouldBe modified.id
+      repository.createOrUpdateAndRead(modified).runUnsafe() shouldBe modified
+      repository.read(createdPatron.id).runUnsafe().map(_.birthDate) shouldBe Option(newBirthDate)
 
-      repository.delete(createdPatron.id).runSyncUnsafe() shouldBe 1
-      repository.read(createdPatron.id).runSyncUnsafe() shouldBe empty
-      repository.all.runSyncUnsafe() shouldBe empty
+      repository.delete(createdPatron.id).runUnsafe() shouldBe 1
+      repository.read(createdPatron.id).runUnsafe() shouldBe empty
+      repository.all.runUnsafe() shouldBe empty
 
-      repository.deleteAll().runSyncUnsafe() shouldBe 0
+      repository.deleteAll().runUnsafe() shouldBe 0
 
     }
   }

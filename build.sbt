@@ -26,6 +26,7 @@ ThisBuild / scalacOptions ++= Seq(
   "-feature",     // warning and location for usages of features that should be imported explicitly
   "-unchecked",   // additional warnings where generated code depends on assumptions
   "-language:reflectiveCalls",
+  "-language:implicitConversions",
   s"-release:$targetJdk"
 )
 
@@ -66,7 +67,8 @@ lazy val `repository-jdbc-monad` = projectWithName("repository-jdbc-monad", file
   .settings(
     libraryDependencies ++= Seq(`io.getquill_quill-jdbc`, `org.typelevel_cats-core`)
   )
-  .dependsOn(`repository`)
+  .dependsOn(`repository`, `repository` % "test->test")
+
 
 lazy val `quill-jdbc-zio` = projectWithName("quill-jdbc-zio", file("quill-jdbc-zio"))
   .settings(libraryDependencies ++= Seq(`io.getquill_quill-jdbc-zio`, `dev.zio_zio-interop-cats`))

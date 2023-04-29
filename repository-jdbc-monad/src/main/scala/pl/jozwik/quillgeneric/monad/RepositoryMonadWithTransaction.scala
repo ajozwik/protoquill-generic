@@ -1,4 +1,4 @@
-package pl.ds.quillgeneric.monad
+package pl.jozwik.quillgeneric.monad
 
 import cats.Monad
 import cats.implicits.*
@@ -9,7 +9,7 @@ import pl.jozwik.quillgeneric.repository.{ BaseRepository, RepositoryWithTransac
 
 trait JdbcRepositoryMonadWithGeneratedId[F[_]: Monad, K, T <: WithId[K], C <: Context[D, N], +D <: SqlIdiom, +N <: NamingStrategy, UP]
   extends RepositoryWithTransactionWithGeneratedId[F, K, T, UP]
-  with BaseRepositoryMonadWithTransaction[F, K, T, C, D, N, UP] {
+  with RepositoryMonadWithTransaction[F, K, T, C, D, N, UP] {
 
   override def createAndRead(entity: T, generateId: Boolean = true): F[T] =
     inTransaction {
@@ -34,7 +34,7 @@ trait JdbcRepositoryMonadWithGeneratedId[F[_]: Monad, K, T <: WithId[K], C <: Co
 }
 trait JdbcRepositoryMonad[F[_]: Monad, K, T <: WithId[K], C <: Context[D, N], +D <: SqlIdiom, +N <: NamingStrategy, UP]
   extends RepositoryWithTransaction[F, K, T, UP]
-  with BaseRepositoryMonadWithTransaction[F, K, T, C, D, N, UP] {
+  with RepositoryMonadWithTransaction[F, K, T, C, D, N, UP] {
 
   override final def createAndRead(entity: T): F[T] =
     inTransaction {
@@ -58,7 +58,7 @@ trait JdbcRepositoryMonad[F[_]: Monad, K, T <: WithId[K], C <: Context[D, N], +D
 
 }
 
-trait BaseRepositoryMonadWithTransaction[F[_]: Monad, K, T <: WithId[K], C <: Context[D, N], +D <: SqlIdiom, +N <: NamingStrategy, UP]
+trait RepositoryMonadWithTransaction[F[_]: Monad, K, T <: WithId[K], C <: Context[D, N], +D <: SqlIdiom, +N <: NamingStrategy, UP]
   extends BaseRepository[F, K, T, UP]
   with WithTransaction[F] {
   protected val context: C

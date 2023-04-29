@@ -19,12 +19,18 @@ trait Spec extends StrictLogging {
   val timeLimit       = Span(TIMEOUT_SECONDS, Seconds)
 }
 
+object AbstractSpec {
+  sys.props.put("quill.macro.log", false.toString)
+  sys.props.put("quill.binds.log", true.toString)
+  val defaultNamingStrategy: NamingStrategy = Strategy.namingStrategy
+}
+
 trait AbstractSpec extends AnyWordSpecLike with TimeLimitedTests with Spec with Matchers with BeforeAndAfterAll {
 
   protected val now: Instant             = Instant.now().truncatedTo(ChronoUnit.SECONDS)
   protected val today: LocalDate         = LocalDate.now
   protected val dateTime: LocalDateTime  = LocalDateTime.ofInstant(now, ZoneOffset.UTC)
-  protected val strategy: NamingStrategy = Strategy.namingStrategy
+  protected val strategy: NamingStrategy = AbstractSpec.defaultNamingStrategy
 
   protected val (offset, limit) = (0, 100)
   protected val generateId      = true

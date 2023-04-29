@@ -1,13 +1,13 @@
-package pl.jozwik.quillgeneric.zio
+package pl.jozwik.quillgeneric.monad
 
 import io.getquill.*
-import pl.jozwik.quillgeneric.model.{ Configuration, ConfigurationId }
-import pl.jozwik.quillgeneric.zio.repository.ConfigurationRepositoryJdbc
+import pl.jozwik.quillgeneric.model.{Configuration, ConfigurationId}
+import pl.jozwik.quillgeneric.monad.repository.ConfigurationRepositoryTryJdbc
 
-trait ConfigurationSuite extends AbstractZioJdbcSpec {
+trait ConfigurationSuite extends AbstractTryJdbcSpec {
 
-  private val meta            = schemaMeta[Configuration]("CONFIGURATION", _.id -> "`CONFIGURATION_KEY`" , _.value -> "`CONFIGURATION_VALUE`")
-  private lazy val repository = new ConfigurationRepositoryJdbc(ctx)(meta)
+  private implicit val meta: SchemaMeta[Configuration] = schemaMeta[Configuration]("CONFIGURATION", _.id -> "`CONFIGURATION_KEY`" , _.value -> "`CONFIGURATION_VALUE`")
+  private lazy val repository = new ConfigurationRepositoryTryJdbc(ctx)
 
   "ConfigurationRepository " should {
     "All is empty" in {

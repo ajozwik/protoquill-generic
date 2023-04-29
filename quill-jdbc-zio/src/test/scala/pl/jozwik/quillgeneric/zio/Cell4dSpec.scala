@@ -42,12 +42,12 @@ class Cell4dSpec extends AbstractZioJdbcSpec {
         logger.debug("", th)
       }
 
-      repository.all.runSyncUnsafe() shouldBe empty
+      repository.all.runUnsafe() shouldBe empty
       val entity = Cell4d(Cell4dId(4, 1, 0, Integer.MAX_VALUE + 1L), false)
-      repository.create(entity).runSyncUnsafe() shouldBe entity.id
-//      repository.createOrUpdate(entity).runSyncUnsafe() shouldBe entity.id
-//      repository.createOrUpdateAndRead(entity).runSyncUnsafe() shouldBe entity
-//      repository.deleteAll().runSyncUnsafe() shouldBe 1
+      repository.create(entity).runUnsafe() shouldBe entity.id
+//      repository.createOrUpdate(entity).runUnsafe() shouldBe entity.id
+//      repository.createOrUpdateAndRead(entity).runUnsafe() shouldBe entity
+//      repository.deleteAll().runUnsafe() shouldBe 1
     }
   }
 }

@@ -16,7 +16,7 @@ final class ConfigurationRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingS
 
   import context.*
 
-  protected def quoteQuery = quote {
+  protected def quoteQuery: Quoted[EntityQuery[Configuration]] = quote {
     query[Configuration]
   }
 
