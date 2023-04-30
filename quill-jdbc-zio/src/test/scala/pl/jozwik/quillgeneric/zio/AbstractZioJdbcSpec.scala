@@ -21,11 +21,11 @@ object ZioHelperSpec {
 
 trait AbstractZioJdbcSpec extends AbstractSpec with BeforeAndAfterAll {
 
-  extension [T](qzio: QIO[T]) def runUnsafe() = unsafe(qzio)
+  extension [T](task: QIO[T]) def runUnsafe() = unsafe(task)
 
-  protected def unsafe[T](qzio: QIO[T]): T =
+  protected def unsafe[T](task: QIO[T]): T =
     Unsafe.unsafe { implicit unsafe =>
-      val io = qzio.provideEnvironment(ZEnvironment(ZioHelperSpec.pool))
+      val io = task.provideEnvironment(ZEnvironment(ZioHelperSpec.pool))
       zio.Runtime.default.unsafe.run(io).getOrThrow()
     }
 

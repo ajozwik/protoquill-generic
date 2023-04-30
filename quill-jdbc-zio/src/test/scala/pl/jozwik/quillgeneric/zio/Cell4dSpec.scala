@@ -6,7 +6,7 @@ import pl.jozwik.quillgeneric.zio.repository.Cell4dRepositoryJdbc
 
 import scala.util.Using
 
-class Cell4dSpec extends AbstractZioJdbcSpec {
+trait Cell4dSpec extends AbstractZioJdbcSpec {
 
   private val meta       = schemaMeta[Cell4d]("CELL4D", _.id.fk1 -> "X", _.id.fk2 -> "Y", _.id.fk3 -> "Z", _.id.fk4 -> "T")
   private val repository = new Cell4dRepositoryJdbc(ctx)(meta)
