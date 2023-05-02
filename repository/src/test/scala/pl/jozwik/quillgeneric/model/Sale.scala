@@ -8,4 +8,5 @@ final case class SaleId(fk1: ProductId, fk2: PersonId) {
   def personId: PersonId   = fk2
 }
 
-final case class Sale(id: SaleId, saleDate: Instant, saleDateTime: LocalDateTime, createDate: LocalDate) extends WithId[SaleId]
+final case class Sale(id: SaleId, saleDate: Instant, saleDateTime: LocalDateTime = LocalDateTime.now(), createDate: LocalDate = LocalDate.now())
+  extends WithId[SaleId]

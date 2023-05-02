@@ -2,41 +2,36 @@ package pl.jozwik.quillgeneric.zio.repository
 
 import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.model.Person
-import pl.jozwik.quillgeneric.model.PersonId
 import io.getquill.context.qzio.ZioJdbcContext
+import pl.jozwik.quillgeneric.model.{ Product, ProductId }
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
 
-final class PersonRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
-    implicit meta: SchemaMeta[Person]
-) extends ZioJdbcRepositoryWithTransactionWithGeneratedId[PersonId, Person, C, Dialect, Naming] {
+final class ProductRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
+    implicit meta: SchemaMeta[Product]
+) extends ZioJdbcRepositoryWithTransactionWithGeneratedId[ProductId, Product, C, Dialect, Naming] {
 
   import context.*
 
   protected def quoteQuery = quote {
-    query[Person]
+    query[Product]
   }
 
-  protected inline def find(id: PersonId): Quoted[EntityQuery[Person]] = quote {
+  protected inline def find(id: ProductId): Quoted[EntityQuery[Product]] = quote {
     quoteQuery.filter(_.id == lift(id))
   }
 
-  override def all: QIO[Seq[Person]] =
-    for {
-      all <- run(quoteQuery)
-    } yield {
-      all
-    }
+  override def all: QIO[Seq[Product]] =
+    run(quoteQuery)
 
-  override def create(entity: Person, generateId: Boolean = true): QIO[PersonId] =
+  override def create(entity: Product, generateId: Boolean = true): QIO[ProductId] =
     if (generateId) {
       run(quoteQuery.insertValue(lift(entity)).returningGenerated(_.id))
     } else {
       run(quoteQuery.insertValue(lift(entity)).returning(_.id))
     }
 
-  override def createOrUpdate(entity: Person, generateId: Boolean = true): QIO[PersonId] = {
+  override def createOrUpdate(entity: Product, generateId: Boolean = true): QIO[ProductId] = {
     inTransaction {
       for {
         el <- run(find(entity.id).updateValue(lift(entity)))
@@ -51,17 +46,17 @@ final class PersonRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy
     }
   }
 
-  override def read(id: PersonId): QIO[Option[Person]] =
+  override def read(id: ProductId): QIO[Option[Product]] =
     for {
       seq <- run(find(id))
     } yield {
       seq.headOption
     }
 
-  override def update(entity: Person): QIO[Long] =
+  override def update(entity: Product): QIO[Long] =
     run(find(entity.id).updateValue(lift(entity)))
 
-  override def delete(id: PersonId): QIO[Long] =
+  override def delete(id: ProductId): QIO[Long] =
     run(find(id).delete)
 
   override def deleteAll(): QIO[Long] =

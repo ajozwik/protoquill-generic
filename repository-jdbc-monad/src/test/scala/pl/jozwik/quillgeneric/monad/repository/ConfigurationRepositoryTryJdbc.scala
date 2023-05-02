@@ -35,7 +35,7 @@ final class ConfigurationRepositoryTryJdbc[+Dialect <: SqlIdiom, +Naming <: Nami
     }
 
   override def createOrUpdate(entity: Configuration): Try[ConfigurationId] =
-    context.transaction {
+    inTransaction {
       for {
         el <- Try(run(find(entity.id).updateValue(lift(entity))))
         id <- el match
