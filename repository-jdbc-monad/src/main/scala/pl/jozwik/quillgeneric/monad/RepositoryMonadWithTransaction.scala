@@ -65,7 +65,7 @@ trait RepositoryMonadWithTransaction[F[_]: Monad, K, T <: WithId[K], C <: Contex
 
   protected def quoteQuery: Quoted[EntityQuery[T]]
 
-  protected inline def find(id: K): Quoted[EntityQuery[T]]
+  protected def find(id: K): Quoted[EntityQuery[T]]
 
   @SuppressWarnings(Array("org.wartremover.warts.Throw"))
   override final def readUnsafe(id: K): F[T] =

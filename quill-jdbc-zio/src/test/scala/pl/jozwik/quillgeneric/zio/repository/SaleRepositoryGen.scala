@@ -17,7 +17,7 @@ final class SaleRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C
     query[Sale]
   }
 
-  protected inline def find(id: SaleId): Quoted[EntityQuery[Sale]] = quote {
+  protected def find(id: SaleId): Quoted[EntityQuery[Sale]] = quote {
     quoteQuery.filter(_.id.fk1 == lift(id.fk1)).filter(_.id.fk2 == lift(id.fk2))
   }
 

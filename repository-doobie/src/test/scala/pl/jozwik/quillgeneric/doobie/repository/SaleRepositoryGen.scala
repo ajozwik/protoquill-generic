@@ -1,10 +1,10 @@
 package pl.jozwik.quillgeneric.doobie.repository
 
 import doobie.ConnectionIO
-import io.getquill.{doobie, *}
+import io.getquill.{ doobie, * }
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.doobie.{DoobieJdbcContextWithDateQuotes, DoobieJdbcRepository}
-import pl.jozwik.quillgeneric.model.{Sale, SaleId}
+import pl.jozwik.quillgeneric.doobie.{ DoobieJdbcContextWithDateQuotes, DoobieJdbcRepository }
+import pl.jozwik.quillgeneric.model.{ Sale, SaleId }
 
 final class SaleRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: DoobieJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
     implicit meta: SchemaMeta[Sale]
@@ -16,7 +16,7 @@ final class SaleRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C
     query[Sale]
   }
 
-  protected inline def find(id: SaleId): Quoted[EntityQuery[Sale]] = quote {
+  protected def find(id: SaleId): Quoted[EntityQuery[Sale]] = quote {
     quoteQuery.filter(_.id.fk1 == lift(id.fk1)).filter(_.id.fk2 == lift(id.fk2))
   }
 
