@@ -1,14 +1,14 @@
 package pl.jozwik.quillgeneric.doobie.repository
 
 import doobie.ConnectionIO
-import io.getquill.{ doobie, * }
+import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.doobie.{ DoobieJdbcContextWithDateQuotes, DoobieJdbcRepository }
+import pl.jozwik.quillgeneric.doobie.{ DoobieJdbcContextWithDateQuotes, DoobieRepository }
 import pl.jozwik.quillgeneric.model.{ Cell4d, Cell4dId }
 
-final class Cell4dRepositoryJdbc[+D <: SqlIdiom, +N <: NamingStrategy, C <: DoobieJdbcContextWithDateQuotes[D, N]](protected val context: C)(implicit
-    meta: SchemaMeta[Cell4d]
-) extends DoobieJdbcRepository[Cell4dId, Cell4d, C, D, N] {
+final class Cell4DRepository[+D <: SqlIdiom, +N <: NamingStrategy, C <: DoobieJdbcContextWithDateQuotes[D, N]](protected val context: C)(implicit
+                                                                                                                                         meta: SchemaMeta[Cell4d]
+) extends DoobieRepository[Cell4dId, Cell4d, C, D, N] {
 
   import context.*
   protected def quoteQuery = quote {

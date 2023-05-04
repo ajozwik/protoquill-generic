@@ -7,9 +7,9 @@ import pl.jozwik.quillgeneric.model.{ Product, ProductId }
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
 
-final class ProductRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
+final class ProductGenRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
     implicit meta: SchemaMeta[Product]
-) extends ZioJdbcRepositoryWithTransactionWithGeneratedId[ProductId, Product, C, Dialect, Naming] {
+) extends ZioJdbcRepositoryWithGeneratedId[ProductId, Product, C, Dialect, Naming] {
 
   import context.*
 

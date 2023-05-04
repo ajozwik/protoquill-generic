@@ -14,7 +14,6 @@ trait RepositoryWithGeneratedId[F[_], K, T <: WithId[K], UP] extends BaseReposit
   def createOrUpdateAndRead(entity: T, generatedId: Boolean = true): F[T]
 }
 
-
 trait Repository[F[_], K, T <: WithId[K], UP] extends BaseRepository[F, K, T, UP] {
   def create(entity: T): F[K]
 

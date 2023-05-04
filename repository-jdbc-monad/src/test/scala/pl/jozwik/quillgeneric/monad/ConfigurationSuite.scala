@@ -2,12 +2,12 @@ package pl.jozwik.quillgeneric.monad
 
 import io.getquill.*
 import pl.jozwik.quillgeneric.model.{Configuration, ConfigurationId}
-import pl.jozwik.quillgeneric.monad.repository.ConfigurationRepositoryTryJdbc
+import pl.jozwik.quillgeneric.monad.repository.ConfigurationRepositoryTry
 
 trait ConfigurationSuite extends AbstractTryJdbcSpec {
 
   private implicit val meta: SchemaMeta[Configuration] = schemaMeta[Configuration]("CONFIGURATION", _.id -> "`CONFIGURATION_KEY`" , _.value -> "`CONFIGURATION_VALUE`")
-  private lazy val repository = new ConfigurationRepositoryTryJdbc(ctx)
+  private lazy val repository = new ConfigurationRepositoryTry(ctx)
 
   "ConfigurationRepository " should {
     "All is empty" in {

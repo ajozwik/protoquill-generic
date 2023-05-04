@@ -2,14 +2,14 @@ package pl.jozwik.quillgeneric.monad
 
 import io.getquill.*
 import pl.jozwik.quillgeneric.model.{Person, PersonId}
-import pl.jozwik.quillgeneric.monad.repository.PersonRepositoryTryJdbc
+import pl.jozwik.quillgeneric.monad.repository.PersonRepositoryTry
 import zio.Unsafe
 
 trait PersonRepositorySuite extends AbstractTryJdbcSpec {
   "PersonCustomRepository " should {
     "Call all operations on Person with auto generated id and custom field" in {
       implicit val meta: SchemaMeta[Person] = schemaMeta[Person]("Person3", columns => columns.birthDate -> "dob")
-      val repository                        = new PersonRepositoryTryJdbc(ctx)
+      val repository                        = new PersonRepositoryTry(ctx)
       logger.debug("generated id with custom field")
       val person = Person(PersonId.empty, "firstName", "lastName", today)
       repository.all.runUnsafe() shouldBe empty

@@ -8,11 +8,11 @@ import io.getquill.context.sql.idiom.SqlIdiom
 import pl.jozwik.quillgeneric.model.{Configuration, ConfigurationId}
 import pl.jozwik.quillgeneric.monad.*
 
-final class ConfigurationRepositoryTryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: TryJdbcContextWithDateQuotes[Dialect, Naming]](
+final class ConfigurationRepositoryTry[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: TryJdbcContextWithDateQuotes[Dialect, Naming]](
     protected val context: C
 )(implicit
     meta: SchemaMeta[Configuration]
-) extends TryJdbcRepository[ConfigurationId, Configuration, C, Dialect, Naming] {
+) extends TryRepository[ConfigurationId, Configuration, C, Dialect, Naming] {
 
   import context.*
 

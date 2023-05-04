@@ -6,8 +6,8 @@ import io.getquill.context.sql.idiom.SqlIdiom
 import pl.jozwik.quillgeneric.model.{ Cell4d, Cell4dId }
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
-final class Cell4dRepositoryJdbc[+D <: SqlIdiom, +N <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[D, N]](protected val context: C)(implicit
-    meta: SchemaMeta[Cell4d]
+final class Cell4DJdbcRepository[+D <: SqlIdiom, +N <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[D, N]](protected val context: C)(implicit
+                                                                                                                                          meta: SchemaMeta[Cell4d]
 ) extends ZioJdbcRepository[Cell4dId, Cell4d, C, D, N] {
 
   import context.*

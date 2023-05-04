@@ -1,16 +1,18 @@
-package pl.jozwik.quillgeneric.doobie.repository
+package pl.jozwik.quillgeneric.zio.repository
 
-import doobie.ConnectionIO
 import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.doobie.{ DoobieJdbcContextWithDateQuotes, DoobieJdbcRepository }
-import pl.jozwik.quillgeneric.model.{ Configuration, ConfigurationId }
+import pl.jozwik.quillgeneric.model.Configuration
+import pl.jozwik.quillgeneric.model.ConfigurationId
+import io.getquill.context.qzio.ZioJdbcContext
+import pl.jozwik.quillgeneric.zio.*
+import zio.interop.catz.*
 
-final class ConfigurationRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: DoobieJdbcContextWithDateQuotes[Dialect, Naming]](
+final class ConfigurationJdbcRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](
     protected val context: C
 )(implicit
     meta: SchemaMeta[Configuration]
-) extends DoobieJdbcRepository[ConfigurationId, Configuration, C, Dialect, Naming] {
+) extends ZioJdbcRepository[ConfigurationId, Configuration, C, Dialect, Naming] {
 
   import context.*
 
@@ -22,21 +24,21 @@ final class ConfigurationRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingS
     quoteQuery.filter(_.id == lift(id))
   }
 
-  override def all: ConnectionIO[Seq[Configuration]] =
+  override def all: QIO[Seq[Configuration]] =
     for {
       all <- run(quoteQuery)
     } yield {
       all
     }
 
-  override def create(entity: Configuration): ConnectionIO[ConfigurationId] =
+  override def create(entity: Configuration): QIO[ConfigurationId] =
     for {
       _ <- run(quoteQuery.insertValue(lift(entity)))
     } yield {
       entity.id
     }
 
-  override def createOrUpdate(entity: Configuration): ConnectionIO[ConfigurationId] =
+  override def createOrUpdate(entity: Configuration): QIO[ConfigurationId] =
     inTransaction {
       for {
         el <- run(find(entity.id).updateValue(lift(entity)))
@@ -50,20 +52,20 @@ final class ConfigurationRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingS
       }
     }
 
-  override def read(id: ConfigurationId): ConnectionIO[Option[Configuration]] =
+  override def read(id: ConfigurationId): QIO[Option[Configuration]] =
     for {
       seq <- run(find(id))
     } yield {
       seq.headOption
     }
 
-  override def update(entity: Configuration): ConnectionIO[Long] =
+  override def update(entity: Configuration): QIO[Long] =
     run(find(entity.id).updateValue(lift(entity)))
 
-  override def delete(id: ConfigurationId): ConnectionIO[Long] =
+  override def delete(id: ConfigurationId): QIO[Long] =
     run(find(id).delete)
 
-  override def deleteAll(): ConnectionIO[Long] =
+  override def deleteAll(): QIO[Long] =
     run(quoteQuery.delete)
 
 }

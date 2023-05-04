@@ -8,9 +8,9 @@ import io.getquill.context.qzio.ZioJdbcContext
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
 
-final class PersonRepositoryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
+final class PersonRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
     implicit meta: SchemaMeta[Person]
-) extends ZioJdbcRepositoryWithTransactionWithGeneratedId[PersonId, Person, C, Dialect, Naming] {
+) extends ZioJdbcRepositoryWithGeneratedId[PersonId, Person, C, Dialect, Naming] {
 
   import context.*
 

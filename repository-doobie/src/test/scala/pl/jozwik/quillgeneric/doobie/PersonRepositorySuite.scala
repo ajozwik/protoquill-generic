@@ -2,13 +2,13 @@ package pl.jozwik.quillgeneric.doobie
 
 import io.getquill.*
 import pl.jozwik.quillgeneric.model.{ Person, PersonId }
-import pl.jozwik.quillgeneric.doobie.repository.PersonRepositoryJdbc
+import pl.jozwik.quillgeneric.doobie.repository.PersonRepository
 import zio.Unsafe
 trait PersonRepositorySuite extends AbstractDoobieJdbcSpec {
   "PersonCustomRepository " should {
     "Call all operations on Person with auto generated id and custom field" in {
       implicit val meta: SchemaMeta[Person] = schemaMeta[Person]("Person3", columns => columns.birthDate -> "dob")
-      val repository                        = new PersonRepositoryJdbc(ctx)
+      val repository                        = new PersonRepository(ctx)
       logger.debug("generated id with custom field")
       val person = Person(PersonId.empty, "firstName", "lastName", today)
       repository.all.runUnsafe() shouldBe empty

@@ -7,7 +7,7 @@ import pl.jozwik.quillgeneric.model.{ Sale, SaleId }
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
 
-final class SaleRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
+final class SaleJdbcRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
     implicit meta: SchemaMeta[Sale]
 ) extends ZioJdbcRepository[SaleId, Sale, C, Dialect, Naming] {
 

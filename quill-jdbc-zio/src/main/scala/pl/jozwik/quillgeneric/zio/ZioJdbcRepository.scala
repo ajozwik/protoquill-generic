@@ -1,12 +1,12 @@
 package pl.jozwik.quillgeneric.zio
 
 import io.getquill.*
-import io.getquill.context.jdbc.{ JdbcContextTypes, ObjectGenericTimeDecoders, ObjectGenericTimeEncoders }
+import io.getquill.context.jdbc.{JdbcContextTypes, ObjectGenericTimeDecoders, ObjectGenericTimeEncoders}
 import io.getquill.context.qzio.ZioJdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.monad.{ RepositoryMonadWithTransaction, JdbcRepositoryMonad, JdbcRepositoryMonadWithGeneratedId }
+import pl.jozwik.quillgeneric.monad.{RepositoryMonad, RepositoryMonadBaseWithTransaction, RepositoryMonadWithGeneratedId, RepositoryMonadWithTransaction, RepositoryMonadWithTransactionWithGeneratedId}
 import pl.jozwik.quillgeneric.repository.*
-import pl.jozwik.quillgeneric.zio.{ QIO, ZioJdbcContextWithDateQuotes }
+import pl.jozwik.quillgeneric.zio.{QIO, ZioJdbcContextWithDateQuotes}
 import zio.ZIO
 
 import javax.sql.DataSource
@@ -16,15 +16,15 @@ type ZioJdbcContextWithDateQuotes[+Dialect <: SqlIdiom, +Naming <: NamingStrateg
   with ObjectGenericTimeDecoders
   with ObjectGenericTimeEncoders
 
-trait ZioJdbcRepositoryWithTransactionWithGeneratedId[K, T <: WithId[K], C <: ZioJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
-  extends JdbcRepositoryMonadWithGeneratedId[QIO, K, T, C, D, N, Long]
-  with ZioJdbcRepositoryBase[K, T, C, D, N]
+trait ZioJdbcRepositoryWithGeneratedId[K, T <: WithId[K], C <: ZioJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
+  extends RepositoryMonadWithTransactionWithGeneratedId[QIO, K, T, C, D, N, Long]
+  with ZioJdbcWithTransaction[K, T, C, D, N]
 trait ZioJdbcRepository[K, T <: WithId[K], C <: ZioJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
-  extends JdbcRepositoryMonad[QIO, K, T, C, D, N, Long]
-  with ZioJdbcRepositoryBase[K, T, C, D, N]
+  extends RepositoryMonadWithTransaction[QIO, K, T, C, D, N, Long]
+  with ZioJdbcWithTransaction[K, T, C, D, N]
 
-trait ZioJdbcRepositoryBase[K, T <: WithId[K], C <: ZioJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
-  extends RepositoryMonadWithTransaction[QIO, K, T, C, D, N, Long] {
+trait ZioJdbcWithTransaction[K, T <: WithId[K], C <: ZioJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
+  extends RepositoryMonadBaseWithTransaction[QIO, K, T, C, D, N, Long] {
 
   import context.*
 

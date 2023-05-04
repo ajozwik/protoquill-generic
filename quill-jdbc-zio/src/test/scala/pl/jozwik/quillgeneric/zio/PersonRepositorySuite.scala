@@ -1,14 +1,14 @@
 package pl.jozwik.quillgeneric.zio
 
 import pl.jozwik.quillgeneric.model.{ Person, PersonId }
-import pl.jozwik.quillgeneric.zio.repository.PersonRepositoryJdbc
+import pl.jozwik.quillgeneric.zio.repository.PersonRepository
 import zio.Unsafe
 import io.getquill.*
 trait PersonRepositorySuite extends AbstractZioJdbcSpec {
   "PersonCustomRepository " should {
     "Call all operations on Person with auto generated id and custom field" in {
       implicit val meta: SchemaMeta[Person] = schemaMeta[Person]("Person3", columns => columns.birthDate -> "dob")
-      val repository                        = new PersonRepositoryJdbc(ctx)
+      val repository                        = new PersonRepository(ctx)
       logger.debug("generated id with custom field")
       val person = Person(PersonId.empty, "firstName", "lastName", today)
       unsafe {

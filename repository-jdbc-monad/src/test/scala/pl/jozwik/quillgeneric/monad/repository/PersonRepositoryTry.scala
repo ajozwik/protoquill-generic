@@ -6,11 +6,11 @@ import pl.jozwik.quillgeneric.model.{ Person, PersonId }
 import pl.jozwik.quillgeneric.monad.*
 import scala.util.Try
 import cats.implicits.*
-final class PersonRepositoryTryJdbc[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: TryJdbcContextWithDateQuotes[Dialect, Naming]](
+final class PersonRepositoryTry[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: TryJdbcContextWithDateQuotes[Dialect, Naming]](
     protected val context: C
 )(implicit
     meta: SchemaMeta[Person]
-) extends TryJdbcRepositoryWithGeneratedId[PersonId, Person, C, Dialect, Naming] {
+) extends TryRepositoryWithGeneratedId[PersonId, Person, C, Dialect, Naming] {
 
   import context.*
 

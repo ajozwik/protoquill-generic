@@ -8,8 +8,8 @@ trait SaleRepositorySuite extends AbstractDoobieJdbcSpec {
   private implicit val saleSchema: SchemaMeta[Sale]     = schemaMeta[Sale]("SALE", _.id.fk1 -> "PRODUCT_ID", _.id.fk2 -> "PERSON_ID")
   private lazy val saleRepository                       = new SaleRepositoryGen(ctx)
   private implicit val personSchema: SchemaMeta[Person] = schemaMeta[Person]("PERSON2")
-  private lazy val personRepository                     = new PersonRepositoryJdbc(ctx)
-  private lazy val productRepository                    = new ProductRepositoryJdbc(ctx)(schemaMeta("PRODUCT"))
+  private lazy val personRepository                     = new PersonRepository(ctx)
+  private lazy val productRepository                    = new ProductRepository(ctx)(schemaMeta("PRODUCT"))
   "Sale Repository " should {
     "Search empty repository" in {
       saleRepository.all.runUnsafe() shouldBe empty

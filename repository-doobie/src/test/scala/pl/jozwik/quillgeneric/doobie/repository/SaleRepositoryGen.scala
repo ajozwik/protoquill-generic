@@ -1,14 +1,14 @@
 package pl.jozwik.quillgeneric.doobie.repository
 
 import doobie.ConnectionIO
-import io.getquill.{ doobie, * }
+import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.doobie.{ DoobieJdbcContextWithDateQuotes, DoobieJdbcRepository }
+import pl.jozwik.quillgeneric.doobie.{ DoobieJdbcContextWithDateQuotes, DoobieRepository }
 import pl.jozwik.quillgeneric.model.{ Sale, SaleId }
 
 final class SaleRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: DoobieJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
     implicit meta: SchemaMeta[Sale]
-) extends DoobieJdbcRepository[SaleId, Sale, C, Dialect, Naming] {
+) extends DoobieRepository[SaleId, Sale, C, Dialect, Naming] {
 
   import context.*
 

@@ -6,10 +6,10 @@ import pl.jozwik.quillgeneric.zio.repository.*
 
 trait SaleRepositorySuite extends AbstractZioJdbcSpec {
   private implicit val saleSchema: SchemaMeta[Sale]     = schemaMeta[Sale]("SALE", _.id.fk1 -> "PRODUCT_ID", _.id.fk2 -> "PERSON_ID")
-  private lazy val saleRepository                       = new SaleRepositoryGen(ctx)
+  private lazy val saleRepository                       = new SaleJdbcRepositoryGen(ctx)
   private implicit val personSchema: SchemaMeta[Person] = schemaMeta[Person]("PERSON2")
-  private lazy val personRepository                     = new PersonRepositoryJdbc(ctx)
-  private lazy val productRepository                    = new ProductRepositoryGen(ctx)(schemaMeta("PRODUCT"))
+  private lazy val personRepository                     = new PersonRepository(ctx)
+  private lazy val productRepository                    = new ProductGenRepository(ctx)(schemaMeta("PRODUCT"))
   "Sale Repository " should {
     "Call all operations on Sale" in {
       saleRepository.all.runUnsafe() shouldBe Seq()

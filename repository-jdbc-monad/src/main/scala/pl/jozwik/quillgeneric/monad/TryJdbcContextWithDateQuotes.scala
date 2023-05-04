@@ -3,8 +3,8 @@ package pl.jozwik.quillgeneric.monad
 import io.getquill.*
 import io.getquill.context.jdbc.{ JdbcContext, ObjectGenericTimeDecoders, ObjectGenericTimeEncoders }
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.monad.{ JdbcRepositoryMonad, RepositoryMonadWithTransaction }
-import pl.jozwik.quillgeneric.repository.WithId
+import pl.jozwik.quillgeneric.monad.{ RepositoryMonad, RepositoryMonadWithTransaction }
+import pl.jozwik.quillgeneric.repository.{ WithId, WithTransaction }
 
 import scala.util.Try
 
@@ -12,20 +12,18 @@ type TryJdbcContextWithDateQuotes[+Dialect <: SqlIdiom, +Naming <: NamingStrateg
   with ObjectGenericTimeDecoders
   with ObjectGenericTimeEncoders
 
-trait TryJdbcRepositoryWithGeneratedId[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
-  extends JdbcRepositoryMonadWithGeneratedId[Try, K, T, C, D, N, Long]
-  with TryJdbcRepositoryBase[K, T, C, D, N]
+trait TryRepositoryWithGeneratedId[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
+  extends RepositoryMonadWithTransactionWithGeneratedId[Try, K, T, C, D, N, Long]
+  with TryWithTransaction[C, D, N]
 
-trait TryJdbcRepository[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
-  extends JdbcRepositoryMonad[Try, K, T, C, D, N, Long]
-  with TryJdbcRepositoryBase[K, T, C, D, N]
+trait TryRepository[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
+  extends RepositoryMonadWithTransaction[Try, K, T, C, D, N, Long]
+  with TryWithTransaction[C, D, N]
 
-trait TryJdbcRepositoryBase[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
-  extends RepositoryMonadWithTransaction[Try, K, T, C, D, N, Long] {
+trait TryWithTransaction[C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy] extends WithTransaction[Try] {
 
-  import context.*
+  protected val context: C
 
   override final def inTransaction[A](task: Try[A]): Try[A] =
     context.transaction(task)
-
 }
