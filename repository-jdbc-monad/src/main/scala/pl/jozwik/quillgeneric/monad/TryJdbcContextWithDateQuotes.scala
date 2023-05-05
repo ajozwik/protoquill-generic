@@ -12,11 +12,11 @@ type TryJdbcContextWithDateQuotes[+Dialect <: SqlIdiom, +Naming <: NamingStrateg
   with ObjectGenericTimeDecoders
   with ObjectGenericTimeEncoders
 
-trait TryJdbcRepositoryJdbcWithGeneratedId[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
+trait TryJdbcRepositoryWithGeneratedId[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
   extends RepositoryMonadWithTransactionWithGeneratedId[Try, K, T, C, D, N, Long]
   with TryJdbcWithTransaction[C, D, N]
 
-trait TryJdbcJdbcRepository[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
+trait TryJdbcRepository[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
   extends RepositoryMonadWithTransaction[Try, K, T, C, D, N, Long]
   with TryJdbcWithTransaction[C, D, N]
 

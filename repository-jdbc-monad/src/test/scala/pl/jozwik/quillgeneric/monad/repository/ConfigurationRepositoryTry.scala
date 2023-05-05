@@ -12,7 +12,7 @@ final class ConfigurationRepositoryTry[+Dialect <: SqlIdiom, +Naming <: NamingSt
     protected val context: C
 )(implicit
     meta: SchemaMeta[Configuration]
-) extends TryJdbcJdbcRepository[ConfigurationId, Configuration, C, Dialect, Naming] {
+) extends TryJdbcRepository[ConfigurationId, Configuration, C, Dialect, Naming] {
 
   import context.*
 

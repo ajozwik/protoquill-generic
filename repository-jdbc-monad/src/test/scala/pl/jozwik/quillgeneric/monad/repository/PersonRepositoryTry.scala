@@ -10,7 +10,7 @@ final class PersonRepositoryTry[+Dialect <: SqlIdiom, +Naming <: NamingStrategy,
     protected val context: C
 )(implicit
     meta: SchemaMeta[Person]
-) extends TryJdbcRepositoryJdbcWithGeneratedId[PersonId, Person, C, Dialect, Naming] {
+) extends TryJdbcRepositoryWithGeneratedId[PersonId, Person, C, Dialect, Naming] {
 
   import context.*
 
