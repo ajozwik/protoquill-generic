@@ -1,4 +1,4 @@
-val `scalaVersion_3` = "3.3.0-RC5"
+val `scalaVersion_3` = "3.2.2"
 
 ThisBuild / scalaVersion := `scalaVersion_3`
 
