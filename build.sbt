@@ -70,25 +70,30 @@ lazy val `repository-monad` = projectWithName("repository-monad", file("reposito
   .settings(
     libraryDependencies ++= Seq(`org.typelevel_cats-core`)
   )
-  .dependsOn(`repository`, `repository` % "test->test")
+  .dependsOn(`repository`)
+  .dependsOn(`repository` % "test->test")
 
 lazy val `repository-doobie` = projectWithName("repository-doobie", file("repository-doobie"))
   .settings(libraryDependencies ++= Seq(`io.getquill_quill-doobie`, `org.tpolecat_doobie-h2` % Test))
-  .dependsOn(`repository-jdbc-monad`, `repository` % "test->test")
+  .dependsOn(`repository-jdbc-monad`)
+  .dependsOn(`repository` % "test->test")
 
 lazy val `repository-cassandra` = projectWithName("repository-cassandra", file("repository-cassandra"))
   .settings(libraryDependencies ++= Seq(`io.getquill_quill-cassandra`))
-  .dependsOn(`repository-monad`, `repository` % "test->test")
+  .dependsOn(`repository-monad`)
+  .dependsOn(`repository` % "test->test")
 
 lazy val `repository-jdbc-monad` = projectWithName("repository-jdbc-monad", file("repository-jdbc-monad"))
   .settings(
     libraryDependencies ++= Seq(`io.getquill_quill-jdbc`)
   )
-  .dependsOn(`repository-monad`, `repository` % "test->test")
+  .dependsOn(`repository-monad`)
+  .dependsOn(`repository` % "test->test")
 
 lazy val `quill-jdbc-zio` = projectWithName("quill-jdbc-zio", file("quill-jdbc-zio"))
   .settings(libraryDependencies ++= Seq(`io.getquill_quill-jdbc-zio`, `dev.zio_zio-interop-cats`))
-  .dependsOn(`repository-jdbc-monad`, `repository` % "test->test")
+  .dependsOn(`repository-jdbc-monad`)
+  .dependsOn(Seq(`repository`, `repository-jdbc-monad`).map(_ % "test->test")*)
 
 def projectWithName(name: String, file: File): Project =
   Project(name, file).settings(

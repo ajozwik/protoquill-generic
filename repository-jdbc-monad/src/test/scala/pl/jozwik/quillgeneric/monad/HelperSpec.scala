@@ -6,7 +6,8 @@ import pl.jozwik.quillgeneric.PoolHelper
 
 import javax.sql.DataSource
 
-object TryHelperSpec {
-  private val cfg      = JdbcContextConfig(LoadConfig(PoolHelper.PoolName))
-  val pool: DataSource = cfg.dataSource
+object HelperSpec {
+  private val cfg      = LoadConfig(PoolHelper.PoolName)
+  private val jdbcCfg  = JdbcContextConfig(cfg)
+  val pool: DataSource = jdbcCfg.dataSource
 }

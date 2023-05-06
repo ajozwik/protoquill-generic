@@ -10,7 +10,7 @@ trait AbstractTryJdbcSpec extends AbstractSpec with BeforeAndAfterAll with TryVa
 
   extension [T](task: Try[T]) def runUnsafe() = task.success.value
 
-  lazy protected val ctx = new H2JdbcContext(strategy, TryHelperSpec.pool)
+  lazy protected val ctx = new H2JdbcContext(strategy, HelperSpec.pool)
 
   override def afterAll(): Unit = {
     ctx.close()
