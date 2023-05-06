@@ -8,8 +8,8 @@ import scala.util.Using
 
 trait Cell4dSuite extends AbstractZioJdbcSpec {
 
-  private val meta       = schemaMeta[Cell4d]("CELL4D", _.id.fk1 -> "X", _.id.fk2 -> "Y", _.id.fk3 -> "Z", _.id.fk4 -> "T")
-  private val repository = new Cell4DJdbcRepository(ctx)(meta)
+  private implicit val meta: SchemaMeta[Cell4d] = schemaMeta[Cell4d]("CELL4D", _.id.fk1 -> "X", _.id.fk2 -> "Y", _.id.fk3 -> "Z", _.id.fk4 -> "T")
+  private val repository                        = new Cell4DJdbcRepository(ctx)
 
   "Cell4dSuite " should {
     "Call crud operations " in {
