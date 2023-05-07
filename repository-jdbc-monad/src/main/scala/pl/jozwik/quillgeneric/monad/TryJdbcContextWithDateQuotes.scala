@@ -12,15 +12,15 @@ type TryJdbcContextWithDateQuotes[+Dialect <: SqlIdiom, +Naming <: NamingStrateg
   with ObjectGenericTimeDecoders
   with ObjectGenericTimeEncoders
 
-trait TryJdbcRepositoryWithGeneratedId[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
+trait TryJdbcRepositoryWithGeneratedId[K, T <: WithId[K], C <: JdbcContext[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
   extends RepositoryMonadWithTransactionWithGeneratedId[Try, K, T, C, D, N, Long]
   with TryJdbcWithTransaction[C, D, N]
 
-trait TryJdbcRepository[K, T <: WithId[K], C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
+trait TryJdbcRepository[K, T <: WithId[K], C <: JdbcContext[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
   extends RepositoryMonadWithTransaction[Try, K, T, C, D, N, Long]
   with TryJdbcWithTransaction[C, D, N]
 
-trait TryJdbcWithTransaction[C <: TryJdbcContextWithDateQuotes[D, N], +D <: SqlIdiom, +N <: NamingStrategy] extends WithTransaction[Try] {
+trait TryJdbcWithTransaction[C <: JdbcContext[D, N], +D <: SqlIdiom, +N <: NamingStrategy] extends WithTransaction[Try] {
 
   protected val context: C
 
