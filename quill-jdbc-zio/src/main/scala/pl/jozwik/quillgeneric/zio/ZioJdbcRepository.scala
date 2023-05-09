@@ -11,7 +11,7 @@ import zio.ZIO
 
 import javax.sql.DataSource
 
-type QIO[T] = ZIO[DataSource, Throwable, T]
+type QIO[+T] = ZIO[DataSource, Throwable, T]
 type ZioJdbcContextWithDateQuotes[+Dialect <: SqlIdiom, +Naming <: NamingStrategy] = ZioJdbcContext[Dialect, Naming]
   with ObjectGenericTimeDecoders
   with ObjectGenericTimeEncoders
