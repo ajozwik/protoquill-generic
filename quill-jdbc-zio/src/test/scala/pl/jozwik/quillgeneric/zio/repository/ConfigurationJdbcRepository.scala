@@ -7,7 +7,7 @@ import pl.jozwik.quillgeneric.model.ConfigurationId
 import io.getquill.context.qzio.ZioJdbcContext
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
-
+import zio.Task
 final class ConfigurationJdbcRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](
     protected val context: C
 )(implicit
@@ -24,48 +24,50 @@ final class ConfigurationJdbcRepository[+Dialect <: SqlIdiom, +Naming <: NamingS
     quoteQuery.filter(_.id == lift(id))
   }
 
-  override def all: QIO[Seq[Configuration]] =
+  override def all: Task[Seq[Configuration]] =
     for {
       all <- run(quoteQuery)
     } yield {
       all
     }
 
-  override def create(entity: Configuration): QIO[ConfigurationId] =
+  override def create(entity: Configuration): Task[ConfigurationId] =
     for {
       _ <- run(quoteQuery.insertValue(lift(entity)))
     } yield {
       entity.id
     }
 
-  override def createOrUpdate(entity: Configuration): QIO[ConfigurationId] =
+  override def createOrUpdate(entity: Configuration): Task[ConfigurationId] =
     inTransaction {
-      for {
-        el <- run(find(entity.id).updateValue(lift(entity)))
-        id <- el match
-          case 0 =>
-            create(entity)
-          case _ =>
-            pure(entity.id)
-      } yield {
-        id
+      toTask {
+        for {
+          el <- run(find(entity.id).updateValue(lift(entity)))
+          id <- el match
+            case 0 =>
+              create(entity)
+            case _ =>
+              pure(entity.id)
+        } yield {
+          id
+        }
       }
     }
 
-  override def read(id: ConfigurationId): QIO[Option[Configuration]] =
+  override def read(id: ConfigurationId): Task[Option[Configuration]] =
     for {
       seq <- run(find(id))
     } yield {
       seq.headOption
     }
 
-  override def update(entity: Configuration): QIO[Long] =
+  override def update(entity: Configuration): Task[Long] =
     run(find(entity.id).updateValue(lift(entity)))
 
-  override def delete(id: ConfigurationId): QIO[Long] =
+  override def delete(id: ConfigurationId): Task[Long] =
     run(find(id).delete)
 
-  override def deleteAll(): QIO[Long] =
+  override def deleteAll(): Task[Long] =
     run(quoteQuery.delete)
 
 }

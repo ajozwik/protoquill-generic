@@ -6,8 +6,7 @@ import io.getquill.{ H2Dialect, H2ZioJdbcContext, NamingStrategy, autoQuote }
 import org.scalatest.BeforeAndAfterAll
 import pl.jozwik.quillgeneric.monad.HelperSpec
 import pl.jozwik.quillgeneric.{ AbstractSpec, PoolHelper }
-import pl.jozwik.quillgeneric.zio.QIO
-import zio.{ FiberRefs, Runtime, RuntimeFlags, Tag, Unsafe, ZEnvironment, ZIO, ZLayer }
+import zio.*
 
 import javax.sql.DataSource
 
@@ -20,9 +19,9 @@ object ZioHelperSpec {
 
 trait AbstractZioJdbcSpec extends AbstractSpec with BeforeAndAfterAll {
 
-  extension [T](task: QIO[T]) def runUnsafe(): T = unsafe(task)
+  extension [T](task: Task[T]) def runUnsafe(): T = unsafe(task)
 
-  protected def unsafe[T](task: QIO[T]): T =
+  protected def unsafe[T](task: Task[T]): T =
     Unsafe.unsafe { implicit unsafe =>
       val io = task.provideEnvironment(ZEnvironment(HelperSpec.pool))
       zio.Runtime.default.unsafe.run(io).getOrThrow()

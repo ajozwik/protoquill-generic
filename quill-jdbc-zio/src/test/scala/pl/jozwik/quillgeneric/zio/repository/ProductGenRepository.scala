@@ -6,7 +6,7 @@ import io.getquill.context.qzio.ZioJdbcContext
 import pl.jozwik.quillgeneric.model.{ Product, ProductId }
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
-
+import zio.Task
 final class ProductGenRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
     implicit meta: SchemaMeta[Product]
 ) extends ZioJdbcRepositoryWithGeneratedId[ProductId, Product, C, Dialect, Naming] {
@@ -21,45 +21,47 @@ final class ProductGenRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy
     quoteQuery.filter(_.id == lift(id))
   }
 
-  override def all: QIO[Seq[Product]] =
+  override def all: Task[Seq[Product]] =
     run(quoteQuery)
 
-  override def create(entity: Product, generateId: Boolean = true): QIO[ProductId] =
+  override def create(entity: Product, generateId: Boolean = true): Task[ProductId] =
     if (generateId) {
       run(quoteQuery.insertValue(lift(entity)).returningGenerated(_.id))
     } else {
       run(quoteQuery.insertValue(lift(entity)).returning(_.id))
     }
 
-  override def createOrUpdate(entity: Product, generateId: Boolean = true): QIO[ProductId] = {
+  override def createOrUpdate(entity: Product, generateId: Boolean = true): Task[ProductId] = {
     inTransaction {
-      for {
-        el <- run(find(entity.id).updateValue(lift(entity)))
-        id <- el match
-          case 0 =>
-            create(entity, generateId)
-          case _ =>
-            pure(entity.id)
-      } yield {
-        id
+      toTask {
+        for {
+          el <- run(find(entity.id).updateValue(lift(entity)))
+          id <- el match
+            case 0 =>
+              create(entity, generateId)
+            case _ =>
+              pure(entity.id)
+        } yield {
+          id
+        }
       }
     }
   }
 
-  override def read(id: ProductId): QIO[Option[Product]] =
+  override def read(id: ProductId): Task[Option[Product]] =
     for {
       seq <- run(find(id))
     } yield {
       seq.headOption
     }
 
-  override def update(entity: Product): QIO[Long] =
+  override def update(entity: Product): Task[Long] =
     run(find(entity.id).updateValue(lift(entity)))
 
-  override def delete(id: ProductId): QIO[Long] =
+  override def delete(id: ProductId): Task[Long] =
     run(find(id).delete)
 
-  override def deleteAll(): QIO[Long] =
+  override def deleteAll(): Task[Long] =
     run(quoteQuery.delete)
 
 }

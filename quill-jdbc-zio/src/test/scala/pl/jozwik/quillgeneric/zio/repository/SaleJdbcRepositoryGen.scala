@@ -6,9 +6,11 @@ import io.getquill.context.qzio.ZioJdbcContext
 import pl.jozwik.quillgeneric.model.{ Sale, SaleId }
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
-
-final class SaleJdbcRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](protected val context: C)(
-    implicit meta: SchemaMeta[Sale]
+import zio.Task
+final class SaleJdbcRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: ZioJdbcContextWithDateQuotes[Dialect, Naming]](
+    protected val context: C
+)(implicit
+    meta: SchemaMeta[Sale]
 ) extends ZioJdbcRepository[SaleId, Sale, C, Dialect, Naming] {
 
   import context.*
@@ -21,48 +23,50 @@ final class SaleJdbcRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrateg
     quoteQuery.filter(_.id.fk1 == lift(id.fk1)).filter(_.id.fk2 == lift(id.fk2))
   }
 
-  override def all: QIO[Seq[Sale]] =
+  override def all: Task[Seq[Sale]] =
     for {
       all <- run(quoteQuery)
     } yield {
       all
     }
 
-  override def create(entity: Sale): QIO[SaleId] =
+  override def create(entity: Sale): Task[SaleId] =
     for {
       _ <- run(quoteQuery.insertValue(lift(entity)))
     } yield {
       entity.id
     }
 
-  override def createOrUpdate(entity: Sale): QIO[SaleId] =
+  override def createOrUpdate(entity: Sale): Task[SaleId] =
     inTransaction {
-      for {
-        el <- run(find(entity.id).updateValue(lift(entity)))
-        id <- el match
-          case 0 =>
-            create(entity)
-          case _ =>
-            pure(entity.id)
-      } yield {
-        id
+      toTask {
+        for {
+          el <- run(find(entity.id).updateValue(lift(entity)))
+          id <- el match
+            case 0 =>
+              create(entity)
+            case _ =>
+              pure(entity.id)
+        } yield {
+          id
+        }
       }
     }
 
-  override def read(id: SaleId): QIO[Option[Sale]] =
+  override def read(id: SaleId): Task[Option[Sale]] =
     for {
       seq <- run(find(id))
     } yield {
       seq.headOption
     }
 
-  override def update(entity: Sale): QIO[Long] =
+  override def update(entity: Sale): Task[Long] =
     run(find(entity.id).updateValue(lift(entity)))
 
-  override def delete(id: SaleId): QIO[Long] =
+  override def delete(id: SaleId): Task[Long] =
     run(find(id).delete)
 
-  override def deleteAll(): QIO[Long] =
+  override def deleteAll(): Task[Long] =
     run(quoteQuery.delete)
 
 }
