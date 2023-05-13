@@ -36,7 +36,7 @@ final class PersonRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C 
       run(quoteQuery.insertValue(lift(entity)).returning(_.id))
     }
 
-  override def createOrUpdate(entity: Person, generateId: Boolean = true): Task[PersonId] = {
+  override def createOrUpdate(entity: Person, generateId: Boolean = true): Task[PersonId] =
     inTransaction {
       toTask {
         for {
@@ -51,7 +51,6 @@ final class PersonRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C 
         }
       }
     }
-  }
 
   override def read(id: PersonId): Task[Option[Person]] =
     for {
