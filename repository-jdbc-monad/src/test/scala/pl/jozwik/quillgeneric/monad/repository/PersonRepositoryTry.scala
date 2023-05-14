@@ -34,7 +34,7 @@ final class PersonRepositoryTry[+Dialect <: SqlIdiom, +Naming <: NamingStrategy,
       }
     }
 
-  override def createOrUpdate(entity: Person, generateId: Boolean = true): Try[PersonId] = {
+  override def createOrUpdate(entity: Person, generateId: Boolean = true): Try[PersonId] =
     inTransaction {
       for {
         el <- Try(run(find(entity.id).updateValue(lift(entity))))
@@ -47,7 +47,6 @@ final class PersonRepositoryTry[+Dialect <: SqlIdiom, +Naming <: NamingStrategy,
         id
       }
     }
-  }
 
   override def read(id: PersonId): Try[Option[Person]] =
     for {
