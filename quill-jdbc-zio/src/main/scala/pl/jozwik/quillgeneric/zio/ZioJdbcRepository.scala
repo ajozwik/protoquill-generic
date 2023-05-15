@@ -7,8 +7,7 @@ import io.getquill.context.qzio.ZioJdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
 import pl.jozwik.quillgeneric.monad.*
 import pl.jozwik.quillgeneric.repository.*
-import pl.jozwik.quillgeneric.zio.ZioJdbcContextWithDateQuotes
-import zio.{ Task, ZIO }
+import zio.Task
 
 import javax.sql.DataSource
 
