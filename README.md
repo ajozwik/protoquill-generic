@@ -5,6 +5,7 @@ It is used by:
 https://github.com/ajozwik/sbt-protoquill-crud-generic/
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.ajozwik/repository_3/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.ajozwik/repository_3)
+[![Scala CI](https://github.com/ajozwik/protoquill-generic/actions/workflows/scala.yml/badge.svg)](https://github.com/ajozwik/protoquill-generic/actions/workflows/scala.yml)
 
 
 protoquill-generic is implementation for scala 3 project: [quill-generic](https://github.com/ajozwik/quill-generic). protoquill-generic does not use macro yet. 
