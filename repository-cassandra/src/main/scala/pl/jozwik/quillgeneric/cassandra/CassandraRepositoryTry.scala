@@ -43,4 +43,10 @@ trait CassandraRepositoryMonad[F[_]: Monad, K, T <: WithId[K], C <: CassandraSta
       el
     }
 
+  override final def update(t: T): F[Unit] =
+    for {
+      _ <- readUnsafe(t.id)
+      _ <- create(t)
+    } yield {}
+
 }

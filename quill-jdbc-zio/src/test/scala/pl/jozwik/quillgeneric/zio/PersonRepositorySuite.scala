@@ -14,8 +14,17 @@ trait PersonRepositorySuite extends AbstractZioJdbcSpec {
       unsafe {
         repository.all
       } shouldBe empty
-      val personId      = repository.create(person).runUnsafe()
-      val createdPatron = repository.read(personId).runUnsafe().getOrElse(fail())
+      val createdPatron =
+        repository
+          .inTransaction {
+            for {
+              personId <- repository.create(person)
+              p        <- repository.readUnsafe(personId)
+            } yield {
+              p
+            }
+          }
+          .runUnsafe()
       val task = repository.inTransaction {
         for {
           u   <- repository.update(createdPatron)

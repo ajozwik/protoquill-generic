@@ -36,20 +36,22 @@ val quillVersion = scala.util.Properties.propOrElse("quill.version", "4.6.0.1")
 
 val scalaTestVersion = "3.2.15"
 
-val `com.h2database_h2`                        = "com.h2database"              % "h2"               % "2.1.214"
-val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging"    % "3.9.5"
-val `ch.qos.logback_logback-classic`           = "ch.qos.logback"              % "logback-classic"  % "1.2.11"
-val `dev.zio_zio-interop-cats`                 = "dev.zio"                    %% "zio-interop-cats" % "23.0.0.4"
-val `io.getquill_quill-cassandra`              = "io.getquill"                %% "quill-cassandra"  % quillVersion
-val `io.getquill_quill-doobie`                 = "io.getquill"                %% "quill-doobie"     % quillVersion
-val `io.getquill_quill-jdbc-zio`               = "io.getquill"                %% "quill-jdbc-zio"   % quillVersion
-val `io.getquill_quill-jdbc`                   = "io.getquill"                %% "quill-jdbc"       % quillVersion
-val `io.getquill_quill-sql`                    = "io.getquill"                %% "quill-sql"        % quillVersion
-val `org.tpolecat_doobie-h2`                   = "org.tpolecat"               %% "doobie-h2"        % "1.0.0-RC2"
-val `org.typelevel_cats-core`                  = "org.typelevel"              %% "cats-core"        % "2.9.0"
-val `org.scalatest_scalatest`                  = "org.scalatest"              %% "scalatest"        % scalaTestVersion
-val `org.scalacheck_scalacheck`                = "org.scalacheck"             %% "scalacheck"       % "1.17.0"
-val `org.scalatestplus_scalacheck`             = "org.scalatestplus"          %% "scalacheck-1-17"  % s"$scalaTestVersion.0"
+val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.2.11"
+val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra"      % "cassandra-driver-extras" % "3.11.3"
+val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.1.214"
+val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"           % "3.9.5"
+val `dev.zio_zio-interop-cats`                       = "dev.zio"                    %% "zio-interop-cats"        % "23.0.0.4"
+val `io.getquill_quill-cassandra`                    = "io.getquill"                %% "quill-cassandra"         % quillVersion
+val `io.getquill_quill-doobie`                       = "io.getquill"                %% "quill-doobie"            % quillVersion
+val `io.getquill_quill-jdbc-zio`                     = "io.getquill"                %% "quill-jdbc-zio"          % quillVersion
+val `io.getquill_quill-jdbc`                         = "io.getquill"                %% "quill-jdbc"              % quillVersion
+val `io.getquill_quill-sql`                          = "io.getquill"                %% "quill-sql"               % quillVersion
+val `org.cassandraunit_cassandra-unit`               = "org.cassandraunit"           % "cassandra-unit"          % "4.3.1.0"
+val `org.scalacheck_scalacheck`                      = "org.scalacheck"             %% "scalacheck"              % "1.17.0"
+val `org.scalatest_scalatest`                        = "org.scalatest"              %% "scalatest"               % scalaTestVersion
+val `org.scalatestplus_scalacheck`                   = "org.scalatestplus"          %% "scalacheck-1-17"         % s"$scalaTestVersion.0"
+val `org.tpolecat_doobie-h2`                         = "org.tpolecat"               %% "doobie-h2"               % "1.0.0-RC2"
+val `org.typelevel_cats-core`                        = "org.typelevel"              %% "cats-core"               % "2.9.0"
 
 publish / skip := true
 
@@ -79,7 +81,13 @@ lazy val `repository-doobie` = projectWithName("repository-doobie", file("reposi
   .dependsOn(`repository` % "test->test")
 
 lazy val `repository-cassandra` = projectWithName("repository-cassandra", file("repository-cassandra"))
-  .settings(libraryDependencies ++= Seq(`io.getquill_quill-cassandra`))
+  .settings(
+    libraryDependencies ++= Seq(
+      `io.getquill_quill-cassandra`,
+      `org.cassandraunit_cassandra-unit`               % Test,
+      `com.datastax.cassandra_cassandra-driver-extras` % Test
+    )
+  )
   .dependsOn(`repository-monad`)
   .dependsOn(`repository` % "test->test")
 

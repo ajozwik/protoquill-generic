@@ -1,16 +1,18 @@
 package pl.jozwik.quillgeneric
 
 import java.time.temporal.ChronoUnit
-import java.time.{ Instant, LocalDate, LocalDateTime, ZoneOffset }
+import java.time.{Instant, LocalDate, LocalDateTime, ZoneOffset}
 import com.typesafe.scalalogging.StrictLogging
 import io.getquill.NamingStrategy
-import org.scalatest.concurrent.{ AsyncTimeLimitedTests, TimeLimitedTests }
-import org.scalatest.time.{ Seconds, Span }
-import org.scalatest.wordspec.{ AnyWordSpecLike, AsyncWordSpecLike }
-import org.scalatest.BeforeAndAfterAll
+import org.scalatest.concurrent.{AsyncTimeLimitedTests, TimeLimitedTests}
+import org.scalatest.time.{Seconds, Span}
+import org.scalatest.wordspec.{AnyWordSpecLike, AsyncWordSpecLike}
+import org.scalatest.{BeforeAndAfterAll, TryValues}
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.Checkers
 import pl.jozwik.quillgeneric.model.AddressId
+
+import scala.util.*
 
 trait AbstractSpecScalaCheck extends AbstractSpec with Checkers
 
@@ -25,7 +27,7 @@ object AbstractSpec {
   val defaultNamingStrategy: NamingStrategy = Strategy.namingStrategy
 }
 
-trait AbstractSpec extends AnyWordSpecLike with TimeLimitedTests with Spec with Matchers with BeforeAndAfterAll {
+trait AbstractSpec extends AnyWordSpecLike with TryValues with TimeLimitedTests with Spec with Matchers with BeforeAndAfterAll {
 
   protected val now: Instant             = Instant.now().truncatedTo(ChronoUnit.SECONDS)
   protected val today: LocalDate         = LocalDate.now
@@ -34,7 +36,16 @@ trait AbstractSpec extends AnyWordSpecLike with TimeLimitedTests with Spec with 
 
   protected val (offset, limit) = (0, 100)
   protected val generateId      = true
-  protected val addressId       = AddressId(1)
+  protected val addressId: AddressId = AddressId(1)
+
+  extension[T] (task: Try[T])
+    def runUnsafe() = task match {
+      case Success(s) =>
+        s
+      case Failure(th) =>
+        throw th
+    }
+
 }
 
 trait AbstractAsyncSpec extends AsyncWordSpecLike with AsyncTimeLimitedTests with Spec with Matchers
