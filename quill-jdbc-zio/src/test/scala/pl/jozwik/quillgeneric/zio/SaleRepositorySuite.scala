@@ -1,7 +1,7 @@
 package pl.jozwik.quillgeneric.zio
 
 import io.getquill.*
-import pl.jozwik.quillgeneric.model.{Person, PersonId, Product, ProductId, Sale, SaleId}
+import pl.jozwik.quillgeneric.model.{ Person, PersonId, Product, ProductId, Sale, SaleId }
 import pl.jozwik.quillgeneric.zio.repository.*
 
 trait SaleRepositorySuite extends AbstractZioJdbcSpec {
@@ -24,6 +24,7 @@ trait SaleRepositorySuite extends AbstractZioJdbcSpec {
       saleRepository.createOrUpdateAndRead(sale).runUnsafe() shouldBe sale
 
       saleRepository.read(saleId).runUnsafe() shouldBe Option(sale)
+      saleRepository.readUnsafe(saleId).runUnsafe() shouldBe sale
       saleRepository.delete(saleId).runUnsafe() shouldBe 1
       productRepository.delete(product.id).runUnsafe() shouldBe 1
       personRepository.delete(person.id).runUnsafe() shouldBe 1

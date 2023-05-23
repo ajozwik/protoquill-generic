@@ -1,12 +1,13 @@
 package pl.jozwik.quillgeneric.monad
 
 import io.getquill.*
-import pl.jozwik.quillgeneric.model.{Configuration, ConfigurationId}
+import pl.jozwik.quillgeneric.model.{ Configuration, ConfigurationId }
 import pl.jozwik.quillgeneric.monad.repository.ConfigurationRepositoryTry
 
 trait ConfigurationSuite extends AbstractTryJdbcSpec {
 
-  private implicit val meta: SchemaMeta[Configuration] = schemaMeta[Configuration]("CONFIGURATION", _.id -> "`CONFIGURATION_KEY`" , _.value -> "`CONFIGURATION_VALUE`")
+  private implicit val meta: SchemaMeta[Configuration] =
+    schemaMeta[Configuration]("CONFIGURATION", _.id -> "`CONFIGURATION_KEY`", _.value -> "`CONFIGURATION_VALUE`")
   private lazy val repository = new ConfigurationRepositoryTry(ctx)
 
   "ConfigurationRepository " should {
@@ -20,14 +21,14 @@ trait ConfigurationSuite extends AbstractTryJdbcSpec {
       val task = repository
         .inTransaction {
           for {
-            _      <- repository.create(configuration)
-            actual <- repository.readUnsafe(configuration.id)
+            id     <- repository.create(configuration)
+            actual <- repository.readUnsafe(id)
           } yield {
-            actual shouldBe configuration
+            actual
           }
 
         }
-      task.runUnsafe()
+      task.runUnsafe() shouldBe configuration
 
       repository.createOrUpdateAndRead(configuration).runUnsafe() shouldBe configuration
     }

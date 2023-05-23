@@ -4,14 +4,22 @@ import cats.Monad
 import cats.implicits.*
 import io.getquill.context.Context
 import io.getquill.idiom.Idiom
-import io.getquill.{EntityQuery, NamingStrategy, Quoted}
-import pl.jozwik.quillgeneric.repository.{BaseRepository, Repository, RepositoryWithGeneratedId, RepositoryWithTransaction, RepositoryWithTransactionWithGeneratedId, WithId, WithTransaction}
+import io.getquill.{ EntityQuery, NamingStrategy, Quoted }
+import pl.jozwik.quillgeneric.repository.{
+  BaseRepository,
+  Repository,
+  RepositoryWithGeneratedId,
+  RepositoryWithTransaction,
+  RepositoryWithTransactionWithGeneratedId,
+  WithId,
+  WithTransaction
+}
 
 trait RepositoryMonadWithTransactionWithGeneratedId[F[_]: Monad, K, T <: WithId[K], C <: Context[D, N], +D <: Idiom, +N <: NamingStrategy, UP]
   extends RepositoryWithTransactionWithGeneratedId[F, K, T, UP]
   with RepositoryMonadBaseWithTransaction[F, K, T, C, D, N, UP] {
 
-  override def createAndRead(entity: T, generateId: Boolean = true): F[T] =
+  override final def createAndRead(entity: T, generateId: Boolean = true): F[T] =
     inTransaction {
       for {
         id <- create(entity, generateId)
@@ -59,8 +67,6 @@ trait RepositoryMonadWithTransaction[F[_]: Monad, K, T <: WithId[K], C <: Contex
 
 }
 
-
-
 trait RepositoryMonadBaseWithTransaction[F[_]: Monad, K, T <: WithId[K], C <: Context[D, N], +D <: Idiom, +N <: NamingStrategy, UP]
   extends RepositoryMonadBase[F, K, T, C, D, N, UP]
   with WithTransaction[F] {
@@ -75,9 +81,3 @@ trait RepositoryMonadBaseWithTransaction[F[_]: Monad, K, T <: WithId[K], C <: Co
       }
     }
 }
-
-
-
-
-
-

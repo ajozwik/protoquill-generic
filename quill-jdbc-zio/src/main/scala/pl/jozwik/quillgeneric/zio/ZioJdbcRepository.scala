@@ -7,7 +7,7 @@ import io.getquill.context.qzio.ZioJdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
 import pl.jozwik.quillgeneric.monad.*
 import pl.jozwik.quillgeneric.repository.*
-import zio.Task
+import zio.{ Task, ZIO }
 
 import javax.sql.DataSource
 
@@ -29,9 +29,11 @@ trait ZioJdbcWithTransaction[K, T <: WithId[K], C <: ZioJdbcContext[D, N], +D <:
   import context.*
 
   override final def inTransaction[A](task: Task[A]): Task[A] =
-    context.transaction(task.asInstanceOf[QIO[A]]).asInstanceOf[Task[A]]
+    val qio  = fromTask(task)
+    val qioR = context.transaction(qio)
+    toTask(qioR)
 
-  protected implicit def toTask[A](t: QIO[A]): Task[A] =
+  protected implicit def toTask[A](t: ZIO[DataSource, Throwable, A]): Task[A] =
     t.asInstanceOf[Task[A]]
 
   protected implicit def fromTask[A](t: Task[A]): QIO[A] =

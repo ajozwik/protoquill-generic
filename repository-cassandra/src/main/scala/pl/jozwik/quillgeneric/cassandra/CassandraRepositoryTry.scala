@@ -19,7 +19,7 @@ trait CassandraRepositoryTry[K, T <: WithId[K], C <: CassandraStandardContext[N]
 trait CassandraRepositoryMonad[F[_]: Monad, K, T <: WithId[K], C <: CassandraStandardContext[N], +N <: NamingStrategy]
   extends RepositoryMonad[F, K, T, C, CqlIdiom, N, Unit] {
 
-  override def createAndRead(entity: T): F[T] =
+  override final def createAndRead(entity: T): F[T] =
     for {
       id <- create(entity)
       el <- readUnsafe(id)
