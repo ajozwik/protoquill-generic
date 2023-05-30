@@ -7,6 +7,7 @@ https://github.com/ajozwik/sbt-protoquill-crud-generic/
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.ajozwik/repository_3/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.ajozwik/repository_3)
 [![Scala CI](https://github.com/ajozwik/protoquill-generic/actions/workflows/scala.yml/badge.svg)](https://github.com/ajozwik/protoquill-generic/actions/workflows/scala.yml)
 [![codecov](https://codecov.io/gh/ajozwik/protoquill-generic/branch/master/graph/badge.svg?token=O18L2OHB6G)](https://codecov.io/gh/ajozwik/protoquill-generic)
+[![Coverage Status](https://coveralls.io/repos/github/ajozwik/protoquill-generic/badge.svg?branch=master)](https://coveralls.io/github/ajozwik/protoquill-generic?branch=master)
 
 protoquill-generic is implementation for scala 3 project: [quill-generic](https://github.com/ajozwik/quill-generic). protoquill-generic does not use macro yet. 
 It used basic implementation for CRUD operations.
