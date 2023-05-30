@@ -1,6 +1,5 @@
 package pl.jozwik.quillgeneric.cassandra.sync.repository
 
-import cats.Monad
 import pl.jozwik.quillgeneric.cassandra.model.{ Address, AddressId }
 import pl.jozwik.quillgeneric.cassandra.*
 import io.getquill.*

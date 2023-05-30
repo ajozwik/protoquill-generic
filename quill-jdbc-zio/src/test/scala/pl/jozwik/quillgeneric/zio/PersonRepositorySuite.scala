@@ -2,7 +2,6 @@ package pl.jozwik.quillgeneric.zio
 
 import pl.jozwik.quillgeneric.model.{ Person, PersonId }
 import pl.jozwik.quillgeneric.zio.repository.PersonRepository
-import zio.Unsafe
 import io.getquill.*
 trait PersonRepositorySuite extends AbstractZioJdbcSpec {
   "PersonCustomRepository " should {

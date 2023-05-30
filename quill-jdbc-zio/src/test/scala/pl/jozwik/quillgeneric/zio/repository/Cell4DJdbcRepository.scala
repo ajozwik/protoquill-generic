@@ -1,7 +1,6 @@
 package pl.jozwik.quillgeneric.zio.repository
 
 import io.getquill.*
-import io.getquill.context.qzio.ZioJdbcContext
 import io.getquill.context.sql.idiom.SqlIdiom
 import pl.jozwik.quillgeneric.model.{ Cell4d, Cell4dId }
 import pl.jozwik.quillgeneric.zio.*

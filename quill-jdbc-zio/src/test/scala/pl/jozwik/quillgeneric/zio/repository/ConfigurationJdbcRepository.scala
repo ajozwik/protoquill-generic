@@ -4,7 +4,6 @@ import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
 import pl.jozwik.quillgeneric.model.Configuration
 import pl.jozwik.quillgeneric.model.ConfigurationId
-import io.getquill.context.qzio.ZioJdbcContext
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
 import zio.Task
@@ -16,7 +15,7 @@ final class ConfigurationJdbcRepository[+Dialect <: SqlIdiom, +Naming <: NamingS
 
   import context.*
 
-  protected def quoteQuery: Quoted[EntityQuery[Configuration]] = quote {
+  protected inline def quoteQuery: Quoted[EntityQuery[Configuration]] = quote {
     query[Configuration]
   }
 

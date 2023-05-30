@@ -1,11 +1,9 @@
 package pl.jozwik.quillgeneric.zio
 
-import io.getquill.context.qzio.ZioJdbcContext
-import io.getquill.jdbczio.Quill
-import io.getquill.{ H2Dialect, H2ZioJdbcContext, NamingStrategy, autoQuote }
+import io.getquill.*
 import org.scalatest.BeforeAndAfterAll
 import pl.jozwik.quillgeneric.monad.HelperSpec
-import pl.jozwik.quillgeneric.{ AbstractSpec, PoolHelper }
+import pl.jozwik.quillgeneric.AbstractSpec
 import zio.*
 
 import javax.sql.DataSource

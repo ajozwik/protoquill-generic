@@ -2,7 +2,6 @@ package pl.jozwik.quillgeneric.zio.repository
 
 import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
-import io.getquill.context.qzio.ZioJdbcContext
 import pl.jozwik.quillgeneric.model.{ Product, ProductId }
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*

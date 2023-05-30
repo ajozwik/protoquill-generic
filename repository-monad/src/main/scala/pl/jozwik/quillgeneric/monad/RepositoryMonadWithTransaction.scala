@@ -4,12 +4,8 @@ import cats.Monad
 import cats.implicits.*
 import io.getquill.context.Context
 import io.getquill.idiom.Idiom
-import io.getquill.{ EntityQuery, NamingStrategy, Quoted }
+import io.getquill.NamingStrategy
 import pl.jozwik.quillgeneric.repository.{
-  BaseRepository,
-  Repository,
-  RepositoryWithGeneratedId,
-  RepositoryWithTransaction,
   RepositoryWithTransactionWithGeneratedId,
   WithId,
   WithTransaction

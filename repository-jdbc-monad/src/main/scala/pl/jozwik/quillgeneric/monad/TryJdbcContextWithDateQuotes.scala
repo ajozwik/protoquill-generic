@@ -3,7 +3,6 @@ package pl.jozwik.quillgeneric.monad
 import io.getquill.*
 import io.getquill.context.jdbc.{ JdbcContext, ObjectGenericTimeDecoders, ObjectGenericTimeEncoders }
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.monad.{ RepositoryMonad, RepositoryMonadWithTransaction }
 import pl.jozwik.quillgeneric.repository.{ WithId, WithTransaction }
 
 import scala.util.Try

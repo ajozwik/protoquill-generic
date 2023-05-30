@@ -4,7 +4,6 @@ import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
 import pl.jozwik.quillgeneric.model.Person
 import pl.jozwik.quillgeneric.model.PersonId
-import io.getquill.context.qzio.ZioJdbcContext
 import pl.jozwik.quillgeneric.zio.*
 import zio.interop.catz.*
 import zio.Task

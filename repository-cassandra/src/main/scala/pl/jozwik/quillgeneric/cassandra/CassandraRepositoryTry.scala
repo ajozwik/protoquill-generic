@@ -2,15 +2,12 @@ package pl.jozwik.quillgeneric.cassandra
 
 import cats.Monad
 import cats.implicits.*
-import io.getquill.context.cassandra.{ CassandraContext, CassandraStandardContext, CqlIdiom }
+import io.getquill.context.cassandra.{ CassandraStandardContext, CqlIdiom }
 import io.getquill.{ CassandraSyncContext, NamingStrategy }
-import io.getquill.context.Context
 import io.getquill.context.cassandra.encoding.{ Decoders, Encoders }
-import io.getquill.idiom.Idiom
-import pl.jozwik.quillgeneric.monad.{ RepositoryMonad, RepositoryMonadWithGeneratedId }
+import pl.jozwik.quillgeneric.monad.RepositoryMonad
 import pl.jozwik.quillgeneric.repository.WithId
 
-import java.time.Instant
 import scala.util.Try
 
 type CassandraContextWithDateQuotes[+Naming <: NamingStrategy] = CassandraSyncContext[Naming] with Decoders with Encoders

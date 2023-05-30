@@ -1,4 +1,4 @@
-val `scalaVersion_3` = "3.2.2"
+val `scalaVersion_3` = "3.3.0"
 
 ThisBuild / scalaVersion := `scalaVersion_3`
 
@@ -27,6 +27,10 @@ ThisBuild / scalacOptions ++= Seq(
   "-unchecked",   // additional warnings where generated code depends on assumptions
   "-language:reflectiveCalls",
   "-language:implicitConversions",
+  "-Wunused:imports",
+  "-Wunused:linted",
+  "-Wunused:locals",
+  "-Wunused:params",
   s"-release:$targetJdk"
 )
 
@@ -34,13 +38,13 @@ ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-sour
 
 val quillVersion = scala.util.Properties.propOrElse("quill.version", "4.6.0.1")
 
-val scalaTestVersion = "3.2.15"
+val scalaTestVersion = "3.2.16"
 
-val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.2.11"
+val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.2.12"
 val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra"      % "cassandra-driver-extras" % "3.11.3"
 val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.1.214"
 val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"           % "3.9.5"
-val `dev.zio_zio-interop-cats`                       = "dev.zio"                    %% "zio-interop-cats"        % "23.0.0.4"
+val `dev.zio_zio-interop-cats`                       = "dev.zio"                    %% "zio-interop-cats"        % "23.0.0.6"
 val `io.getquill_quill-cassandra`                    = "io.getquill"                %% "quill-cassandra"         % quillVersion
 val `io.getquill_quill-doobie`                       = "io.getquill"                %% "quill-doobie"            % quillVersion
 val `io.getquill_quill-jdbc-zio`                     = "io.getquill"                %% "quill-jdbc-zio"          % quillVersion
