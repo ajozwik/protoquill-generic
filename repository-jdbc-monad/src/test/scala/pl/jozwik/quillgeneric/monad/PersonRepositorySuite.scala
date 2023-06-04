@@ -3,7 +3,8 @@ package pl.jozwik.quillgeneric.monad
 import io.getquill.*
 import pl.jozwik.quillgeneric.model.{ Person, PersonId }
 import pl.jozwik.quillgeneric.monad.repository.PersonRepositoryTry
-import zio.Unsafe
+
+import java.sql.SQLException
 
 trait PersonRepositorySuite extends AbstractTryJdbcSpec {
   "PersonCustomRepository " should {
@@ -15,6 +16,9 @@ trait PersonRepositorySuite extends AbstractTryJdbcSpec {
       repository.all.runUnsafe() shouldBe empty
       val personId      = repository.create(person).runUnsafe()
       val createdPatron = repository.read(personId).runUnsafe().getOrElse(fail())
+      intercept[SQLException] {
+        repository.createAndRead(createdPatron, false).runUnsafe()
+      }
       val task = repository.inTransaction {
         for {
           u   <- repository.update(createdPatron)

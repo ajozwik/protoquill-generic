@@ -2,17 +2,14 @@ package pl.jozwik.quillgeneric.doobie
 
 import cats.effect.IO
 import cats.effect.kernel.Resource
-import cats.effect.unsafe.implicits.global
-import doobie.{ ConnectionIO, HC, Transactor }
-import doobie.implicits.*
+import doobie.ConnectionIO
 import doobie.h2.*
-import io.getquill.H2JdbcContext
+import doobie.implicits.*
 import io.getquill.doobie.DoobieContext
-import org.scalatest.{ BeforeAndAfterAll, EitherValues, TryValues }
+import org.scalatest.{ BeforeAndAfterAll, EitherValues }
 import pl.jozwik.quillgeneric.AbstractSpec
 
 import scala.concurrent.ExecutionContext
-import scala.util.Try
 
 trait AbstractDoobieJdbcSpec extends AbstractSpec with BeforeAndAfterAll with EitherValues {
 

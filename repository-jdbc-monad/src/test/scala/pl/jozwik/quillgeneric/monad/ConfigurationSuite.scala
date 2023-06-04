@@ -4,6 +4,8 @@ import io.getquill.*
 import pl.jozwik.quillgeneric.model.{ Configuration, ConfigurationId }
 import pl.jozwik.quillgeneric.monad.repository.ConfigurationRepositoryTry
 
+import java.sql.SQLException
+
 trait ConfigurationSuite extends AbstractTryJdbcSpec {
 
   private implicit val meta: SchemaMeta[Configuration] =
@@ -31,6 +33,9 @@ trait ConfigurationSuite extends AbstractTryJdbcSpec {
       task.runUnsafe() shouldBe configuration
 
       repository.createOrUpdateAndRead(configuration).runUnsafe() shouldBe configuration
+      intercept[SQLException] {
+        repository.createAndRead(configuration).runUnsafe()
+      }
     }
   }
 }

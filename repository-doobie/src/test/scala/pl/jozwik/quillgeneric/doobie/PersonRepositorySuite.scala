@@ -3,7 +3,6 @@ package pl.jozwik.quillgeneric.doobie
 import io.getquill.*
 import pl.jozwik.quillgeneric.model.{ Person, PersonId }
 import pl.jozwik.quillgeneric.doobie.repository.PersonRepository
-import zio.Unsafe
 trait PersonRepositorySuite extends AbstractDoobieJdbcSpec {
   "PersonCustomRepository " should {
     "Call all operations on Person with auto generated id and custom field" in {
@@ -13,13 +12,14 @@ trait PersonRepositorySuite extends AbstractDoobieJdbcSpec {
       val person = Person(PersonId.empty, "firstName", "lastName", today)
       repository.all.runUnsafe() shouldBe empty
       val personId = repository.create(person).runUnsafe()
-      val all      = repository.all.runUnsafe()
+
       val createdPatron = repository.read(personId).runUnsafe() match {
         case Some(p) =>
           p
         case _ =>
           fail()
       }
+      repository.all.runUnsafe() shouldBe Seq(createdPatron)
       val task = repository.inTransaction {
         for {
           u   <- repository.update(createdPatron)

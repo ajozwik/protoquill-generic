@@ -4,7 +4,6 @@ import io.getquill.*
 import pl.jozwik.quillgeneric.model.{ Cell4d, Cell4dId }
 import pl.jozwik.quillgeneric.doobie.repository.Cell4DRepository
 
-import scala.util.Using
 
 trait Cell4dSuite extends AbstractDoobieJdbcSpec {
 
