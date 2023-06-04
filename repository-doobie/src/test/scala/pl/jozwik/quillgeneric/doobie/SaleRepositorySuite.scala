@@ -25,9 +25,13 @@ trait SaleRepositorySuite extends AbstractDoobieJdbcSpec {
       saleRepository.createAndRead(sale).runUnsafe() shouldBe sale
       saleRepository.createOrUpdateAndRead(sale).runUnsafe() shouldBe sale
       saleRepository.read(saleId).runUnsafe() shouldBe Option(sale)
+      saleRepository.readUnsafe(saleId).runUnsafe() shouldBe sale
       saleRepository.delete(saleId).runUnsafe() shouldBe 1
       productRepository.delete(product.id).runUnsafe() shouldBe 1
       personRepository.delete(person.id).runUnsafe() shouldBe 1
+      intercept[RuntimeException] {
+        saleRepository.readUnsafe(saleId).runUnsafe()
+      }
     }
   }
 
