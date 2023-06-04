@@ -27,16 +27,15 @@ trait AddressSuite extends AbstractSyncSpec {
       repository.updateAndRead(updated).runUnsafe() shouldBe updated
       repository.deleteAll().runUnsafe()
       repository.all.runUnsafe() shouldBe Seq.empty
-//      intercept[NoSuchElementException] {
-//        repository.readUnsafe(id).runUnsafe()
-//      }
-//
-//      intercept[NoSuchElementException] {
-//        repository.update(add).runUnsafe()
-//      }
-//      intercept[NoSuchElementException] {
-//        repository.updateAndRead(add).runUnsafe()
-//      }
+      intercept[NoSuchElementException] {
+        repository.readUnsafe(id).runUnsafe()
+      }
+      intercept[NoSuchElementException] {
+        repository.update(add).runUnsafe()
+      }
+      intercept[NoSuchElementException] {
+        repository.updateAndRead(add).runUnsafe()
+      }
     }
 
   }
