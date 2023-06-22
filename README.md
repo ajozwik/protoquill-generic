@@ -63,7 +63,7 @@ trait RepositoryWithTransactionWithGeneratedId[F[_], K, T <: WithId[K], UP] exte
 ```
 
 Because protoquill-macro's are created in compile time - we need to know primary key. Case class for database entity has to have field id - the primary key [WithId](/repository/src/main/scala/pl/jozwik/quillgeneric/repository/WithId.scala)
-If you have composite key you need to create case class like [Cell4dId](/repository/src/main/scala/pl/jozwik/quillgeneric/model/Cell4dId.scala):
+If you have composite key you need to create case class like [Cell4dId](/repository/src/test/scala/pl/jozwik/quillgeneric/model/Cell4d.scala):
 
 For table
 ```sql
