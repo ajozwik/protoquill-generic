@@ -1,6 +1,8 @@
 package pl.jozwik.quillgeneric.model
 
-import java.time.{ Instant, LocalDate, LocalDateTime }
+import pl.jozwik.quillgeneric.DateTimeHelper
+
+import java.time.{Instant, LocalDate, LocalDateTime}
 import pl.jozwik.quillgeneric.repository.WithId
 
 final case class SaleId(fk1: ProductId, fk2: PersonId) {
@@ -8,5 +10,5 @@ final case class SaleId(fk1: ProductId, fk2: PersonId) {
   def personId: PersonId   = fk2
 }
 
-final case class Sale(id: SaleId, saleDate: Instant, saleDateTime: LocalDateTime = LocalDateTime.now(), createDate: LocalDate = LocalDate.now())
+final case class Sale(id: SaleId, saleDate: Instant, saleDateTime: LocalDateTime = DateTimeHelper.localDateTimeNow, createDate: LocalDate = LocalDate.now())
   extends WithId[SaleId]
