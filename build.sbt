@@ -1,4 +1,4 @@
-val `scalaVersion_3` = "3.3.1"
+val `scalaVersion_3` = "3.4.0"
 
 ThisBuild / scalaVersion := `scalaVersion_3`
 
@@ -38,13 +38,13 @@ ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-sour
 
 val quillVersion = scala.util.Properties.propOrElse("quill.version", "4.8.1")
 
-val scalaTestVersion = "3.2.17"
+val scalaTestVersion = "3.2.18"
 
 val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.3.14"
 val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra"      % "cassandra-driver-extras" % "3.11.5"
 val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.2.224"
 val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"           % "3.9.5"
-val `dev.zio_zio-interop-cats`                       = "dev.zio"                    %% "zio-interop-cats"        % "23.1.0.0"
+val `dev.zio_zio-interop-cats`                       = "dev.zio"                    %% "zio-interop-cats"        % "23.1.0.1"
 val `io.getquill_quill-cassandra`                    = "io.getquill"                %% "quill-cassandra"         % quillVersion
 val `io.getquill_quill-doobie`                       = "io.getquill"                %% "quill-doobie"            % quillVersion
 val `io.getquill_quill-jdbc-zio`                     = "io.getquill"                %% "quill-jdbc-zio"          % quillVersion
@@ -54,7 +54,7 @@ val `org.cassandraunit_cassandra-unit`               = "org.cassandraunit"      
 val `org.scalacheck_scalacheck`                      = "org.scalacheck"             %% "scalacheck"              % "1.17.0"
 val `org.scalatest_scalatest`                        = "org.scalatest"              %% "scalatest"               % scalaTestVersion
 val `org.scalatestplus_scalacheck`                   = "org.scalatestplus"          %% "scalacheck-1-17"         % s"$scalaTestVersion.0"
-val `org.tpolecat_doobie-h2`                         = "org.tpolecat"               %% "doobie-h2"               % "1.0.0-RC4"
+val `org.tpolecat_doobie-h2`                         = "org.tpolecat"               %% "doobie-h2"               % "1.0.0-RC5"
 val `org.typelevel_cats-core`                        = "org.typelevel"              %% "cats-core"               % "2.10.0"
 
 publish / skip := true
