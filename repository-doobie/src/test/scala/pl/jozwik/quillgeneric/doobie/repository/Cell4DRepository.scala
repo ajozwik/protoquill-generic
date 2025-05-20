@@ -11,11 +11,11 @@ final class Cell4DRepository[+D <: SqlIdiom, +N <: NamingStrategy, C <: DoobieJd
 ) extends DoobieRepository[Cell4dId, Cell4d, C, D, N] {
 
   import context.*
-  protected def quoteQuery = quote {
+  protected def quoteQuery: Quoted[EntityQuery[Cell4d]] = quote {
     query[Cell4d]
   }
 
-  protected inline def find(id: Cell4dId) = quote {
+  protected inline def find(id: Cell4dId): Quoted[EntityQuery[Cell4d]] = quote {
     quoteQuery.filter(_.id.fk1 == lift(id.x)).filter(_.id.fk2 == lift(id.y)).filter(_.id.fk3 == lift(id.z)).filter(_.id.fk4 == lift(id.t))
   }
 

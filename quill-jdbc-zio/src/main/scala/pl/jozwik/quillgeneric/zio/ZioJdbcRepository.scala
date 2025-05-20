@@ -26,7 +26,6 @@ trait ZioJdbcRepository[K, T <: WithId[K], C <: ZioJdbcContext[D, N], +D <: SqlI
 trait ZioJdbcWithTransaction[K, T <: WithId[K], C <: ZioJdbcContext[D, N], +D <: SqlIdiom, +N <: NamingStrategy]
   extends RepositoryMonadBaseWithTransaction[Task, K, T, C, D, N, Long] {
 
-  import context.*
 
   override final def inTransaction[A](task: Task[A]): Task[A] =
     val qio  = fromTask(task)
