@@ -1,4 +1,5 @@
-val `scalaVersion_3` = "3.3.5"
+
+val `scalaVersion_3` = "3.3.6"
 
 ThisBuild / scalaVersion := `scalaVersion_3`
 
@@ -12,8 +13,6 @@ def init(): Unit = {
 }
 
 val fake: Unit = init()
-
-resolvers ++= Resolver.sonatypeOssRepos("releases")
 
 //ThisBuild / Test / fork := true
 
@@ -40,7 +39,7 @@ val quillVersion = scala.util.Properties.propOrElse("quill.version", "4.8.6")
 
 val scalaTestVersion = "3.2.19"
 
-val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.3.14"
+val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.3.15"
 val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra"      % "cassandra-driver-extras" % "3.11.5"
 val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.3.232"
 val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"           % "3.9.5"
@@ -109,8 +108,8 @@ lazy val `quill-jdbc-zio` = projectWithName("quill-jdbc-zio", file("quill-jdbc-z
 
 def projectWithName(name: String, file: File): Project =
   Project(name, file).settings(
-    licenseReportTitle      := s"Copyright (c) ${java.time.LocalDate.now.getYear} Andrzej Jozwik",
-    licenseSelection        := Seq(LicenseCategory.MIT),
+//    licenseReportTitle      := s"Copyright (c) ${java.time.LocalDate.now.getYear} Andrzej Jozwik",
+//    licenseSelection        := Seq(LicenseCategory.MIT),
     Compile / doc / sources := Seq.empty,
     Compile / compile / wartremoverWarnings ++= Warts.allBut(Wart.ImplicitParameter, Wart.DefaultArguments)
   )
