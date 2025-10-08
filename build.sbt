@@ -1,4 +1,3 @@
-
 val `scalaVersion_3` = "3.3.6"
 
 ThisBuild / scalaVersion := `scalaVersion_3`
@@ -41,8 +40,8 @@ val scalaTestVersion = "3.2.19"
 
 val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.3.15"
 val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra"      % "cassandra-driver-extras" % "3.11.5"
-val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.3.232"
-val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"           % "3.9.5"
+val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.4.240"
+val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"           % "3.9.6"
 val `dev.zio_zio-interop-cats`                       = "dev.zio"                    %% "zio-interop-cats"        % "23.1.0.5"
 val `io.getquill_quill-cassandra`                    = "io.getquill"                %% "quill-cassandra"         % quillVersion
 val `io.getquill_quill-doobie`                       = "io.getquill"                %% "quill-doobie"            % quillVersion
@@ -83,7 +82,7 @@ lazy val `repository-doobie` = projectWithName("repository-doobie", file("reposi
   .dependsOn(`repository-jdbc-monad`)
   .dependsOn(`repository` % "test->test")
 
-lazy val `repository-cassandra` = projectWithName("repository-cassandra", file("repository-cassandra"))
+lazy val `repository-cassandra` = projectWithName("repository-cassandra", file("repository-cassandra"), true)
   .settings(
     libraryDependencies ++= Seq(
       `io.getquill_quill-cassandra`,
@@ -106,10 +105,11 @@ lazy val `quill-jdbc-zio` = projectWithName("quill-jdbc-zio", file("quill-jdbc-z
   .dependsOn(`repository-jdbc-monad`)
   .dependsOn(Seq(`repository`, `repository-jdbc-monad`).map(_ % "test->test")*)
 
-def projectWithName(name: String, file: File): Project =
+def projectWithName(name: String, file: File, forkInTest: Boolean = false): Project =
   Project(name, file).settings(
 //    licenseReportTitle      := s"Copyright (c) ${java.time.LocalDate.now.getYear} Andrzej Jozwik",
 //    licenseSelection        := Seq(LicenseCategory.MIT),
+    Test / fork             := forkInTest,
     Compile / doc / sources := Seq.empty,
     Compile / compile / wartremoverWarnings ++= Warts.allBut(Wart.ImplicitParameter, Wart.DefaultArguments)
   )
