@@ -48,6 +48,16 @@ final class SaleRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C
       }
     }
 
+  override def filtersByKeys(values: Map[String, Any]): ConnectionIO[Seq[Sale]] = {
+    inline def q = quoteQuery.filterByKeys(values)
+
+    for {
+      all <- run(q)
+    } yield {
+      all
+    }
+  }
+
   override def read(id: SaleId): ConnectionIO[Option[Sale]] =
     for {
       seq <- run(find(id))

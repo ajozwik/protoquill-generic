@@ -28,14 +28,18 @@ trait PersonRepositorySuite extends AbstractDoobieJdbcSpec {
           (u, all)
         }
       }
-      task.runUnsafe() shouldBe ((1, Seq(createdPatron)))
+      val (id, all) = task.runUnsafe()
+      (id, all) shouldBe ((1, Seq(createdPatron)))
       val newBirthDate = createdPatron.birthDate.minusYears(1)
       val modified     = createdPatron.copy(birthDate = newBirthDate)
       repository.update(modified).runUnsafe() shouldBe 1
       repository.createOrUpdate(modified).runUnsafe() shouldBe modified.id
       repository.createOrUpdateAndRead(modified).runUnsafe() shouldBe modified
       repository.read(createdPatron.id).runUnsafe().map(_.birthDate) shouldBe Option(newBirthDate)
-
+      val allByKeys = repository.filtersByKeys(Map()).runUnsafe()
+      allByKeys should not be empty
+      val filtered = repository.filtersByKeys(Map("firstName" -> modified.firstName)).runUnsafe()
+      filtered should not be empty
       repository.delete(createdPatron.id).runUnsafe() shouldBe 1
       repository.read(createdPatron.id).runUnsafe() shouldBe empty
       repository.all.runUnsafe() shouldBe empty

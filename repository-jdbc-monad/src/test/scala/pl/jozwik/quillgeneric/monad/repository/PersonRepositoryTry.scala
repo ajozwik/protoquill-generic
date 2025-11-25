@@ -48,6 +48,11 @@ final class PersonRepositoryTry[+Dialect <: SqlIdiom, +Naming <: NamingStrategy,
       }
     }
 
+  override def filtersByKeys(values: Map[String, Any]): Try[Seq[Person]] = Try {
+    inline def q = quoteQuery.filterByKeys(values)
+    run(q)
+  }
+
   override def read(id: PersonId): Try[Option[Person]] =
     for {
       seq <- Try {

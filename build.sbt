@@ -1,4 +1,6 @@
-val `scalaVersion_3` = "3.3.6"
+import Versions.*
+
+val `scalaVersion_3` = "3.3.7"
 
 ThisBuild / scalaVersion := `scalaVersion_3`
 
@@ -34,15 +36,11 @@ ThisBuild / scalacOptions ++= Seq(
 
 ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-source", targetJdk, "-target", targetJdk)
 
-val quillVersion = scala.util.Properties.propOrElse("quill.version", "4.8.6")
-
-val scalaTestVersion = "3.2.19"
-
 val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"         % "1.3.15"
 val `com.datastax.cassandra_cassandra-driver-extras` = "com.datastax.cassandra"      % "cassandra-driver-extras" % "3.11.5"
 val `com.h2database_h2`                              = "com.h2database"              % "h2"                      % "2.4.240"
 val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"           % "3.9.6"
-val `dev.zio_zio-interop-cats`                       = "dev.zio"                    %% "zio-interop-cats"        % "23.1.0.5"
+val `dev.zio_zio-interop-cats`                       = "dev.zio"                    %% "zio-interop-cats"        % "23.1.0.10"
 val `io.getquill_quill-cassandra`                    = "io.getquill"                %% "quill-cassandra"         % quillVersion
 val `io.getquill_quill-doobie`                       = "io.getquill"                %% "quill-doobie"            % quillVersion
 val `io.getquill_quill-jdbc-zio`                     = "io.getquill"                %% "quill-jdbc-zio"          % quillVersion
@@ -103,7 +101,7 @@ lazy val `repository-jdbc-monad` = projectWithName("repository-jdbc-monad", file
 lazy val `quill-jdbc-zio` = projectWithName("quill-jdbc-zio", file("quill-jdbc-zio"))
   .settings(libraryDependencies ++= Seq(`io.getquill_quill-jdbc-zio`, `dev.zio_zio-interop-cats`))
   .dependsOn(`repository-jdbc-monad`)
-  .dependsOn(Seq(`repository`, `repository-jdbc-monad`).map(_ % "test->test")*)
+  .dependsOn(Seq(`repository`, `repository-jdbc-monad`).map(_ % "test->test") *)
 
 def projectWithName(name: String, file: File, forkInTest: Boolean = false): Project =
   Project(name, file).settings(

@@ -51,6 +51,15 @@ final class PersonRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C 
     }
   }
 
+  override def filtersByKeys(values: Map[String, Any]): ConnectionIO[Seq[Person]] = {
+    inline def q = quoteQuery.filterByKeys(values)
+    for {
+      all <- run(q)
+    } yield {
+      all
+    }
+  }
+
   override def read(id: PersonId): ConnectionIO[Option[Person]] =
     for {
       seq <- run(find(id))

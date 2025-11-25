@@ -50,6 +50,15 @@ final class ConfigurationRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrat
       }
     }
 
+  override def filtersByKeys(values: Map[String, Any]): ConnectionIO[Seq[Configuration]] = {
+    inline def q = quoteQuery.filterByKeys(values)
+    for {
+      all <- run(q)
+    } yield {
+      all
+    }
+  }
+
   override def read(id: ConfigurationId): ConnectionIO[Option[Configuration]] =
     for {
       seq <- run(find(id))

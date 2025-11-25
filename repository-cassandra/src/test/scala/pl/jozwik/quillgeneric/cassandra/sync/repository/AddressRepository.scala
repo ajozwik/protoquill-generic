@@ -29,6 +29,12 @@ final class AddressRepository[+Naming <: NamingStrategy, C <: CassandraContextWi
       entity.id
     }
 
+  override def filtersByKeys(values: Map[String, Any]): Try[Seq[Address]] = Try {
+    inline def q = quoteQuery.filterByKeys(values)
+    run(q)
+  }
+
+
   override def read(id: AddressId): Try[Option[Address]] = {
     for {
       seq <- Try(run(find(id)))

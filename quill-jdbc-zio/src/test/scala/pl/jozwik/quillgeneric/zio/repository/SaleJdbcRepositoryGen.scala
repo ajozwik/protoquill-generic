@@ -52,6 +52,12 @@ final class SaleJdbcRepositoryGen[+Dialect <: SqlIdiom, +Naming <: NamingStrateg
       }
     }
 
+  override def filtersByKeys(values: Map[String, Any]): Task[Seq[Sale]] = {
+    inline def q = quoteQuery.filterByKeys(values)
+    run(q)
+  }
+
+
   override def read(id: SaleId): Task[Option[Sale]] =
     for {
       seq <- run(find(id))

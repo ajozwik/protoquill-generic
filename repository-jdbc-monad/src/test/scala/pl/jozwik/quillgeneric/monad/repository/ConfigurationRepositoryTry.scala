@@ -5,7 +5,7 @@ import cats.implicits.*
 import scala.util.Try
 import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.model.{Configuration, ConfigurationId}
+import pl.jozwik.quillgeneric.model.{ Configuration, ConfigurationId }
 import pl.jozwik.quillgeneric.monad.*
 
 final class ConfigurationRepositoryTry[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: TryJdbcContextWithDateQuotes[Dialect, Naming]](
@@ -47,6 +47,11 @@ final class ConfigurationRepositoryTry[+Dialect <: SqlIdiom, +Naming <: NamingSt
         id
       }
     }
+
+  override def filtersByKeys(values: Map[String, Any]): Try[Seq[Configuration]] = Try {
+    inline def q = quoteQuery.filterByKeys(values)
+    run(q)
+  }
 
   override def read(id: ConfigurationId): Try[Option[Configuration]] =
     for {

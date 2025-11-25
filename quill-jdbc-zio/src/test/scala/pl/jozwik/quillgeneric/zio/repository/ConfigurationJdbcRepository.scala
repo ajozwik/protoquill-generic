@@ -53,6 +53,12 @@ final class ConfigurationJdbcRepository[+Dialect <: SqlIdiom, +Naming <: NamingS
       }
     }
 
+
+  override def filtersByKeys(values: Map[String, Any]): Task[Seq[Configuration]] = {
+    inline def q = quoteQuery.filterByKeys(values)
+    run(q)
+  }
+
   override def read(id: ConfigurationId): Task[Option[Configuration]] =
     for {
       seq <- run(find(id))

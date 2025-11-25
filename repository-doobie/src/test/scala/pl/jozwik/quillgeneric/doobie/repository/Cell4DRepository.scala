@@ -7,7 +7,7 @@ import pl.jozwik.quillgeneric.doobie.{ DoobieJdbcContextWithDateQuotes, DoobieRe
 import pl.jozwik.quillgeneric.model.{ Cell4d, Cell4dId }
 
 final class Cell4DRepository[+D <: SqlIdiom, +N <: NamingStrategy, C <: DoobieJdbcContextWithDateQuotes[D, N]](protected val context: C)(implicit
-                                                                                                                                         meta: SchemaMeta[Cell4d]
+    meta: SchemaMeta[Cell4d]
 ) extends DoobieRepository[Cell4dId, Cell4d, C, D, N] {
 
   import context.*
@@ -46,6 +46,15 @@ final class Cell4DRepository[+D <: SqlIdiom, +N <: NamingStrategy, C <: DoobieJd
         id
       }
     }
+
+  override def filtersByKeys(values: Map[String, Any]): ConnectionIO[Seq[Cell4d]] = {
+    inline def q = quoteQuery.filterByKeys(values)
+    for {
+      all <- run(q)
+    } yield {
+      all
+    }
+  }
 
   override def read(id: Cell4dId): ConnectionIO[Option[Cell4d]] =
     for {

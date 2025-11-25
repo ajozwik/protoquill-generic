@@ -7,7 +7,7 @@ import io.getquill.NamingStrategy
 import org.scalatest.concurrent.{AsyncTimeLimitedTests, TimeLimitedTests}
 import org.scalatest.time.{Seconds, Span}
 import org.scalatest.wordspec.{AnyWordSpecLike, AsyncWordSpecLike}
-import org.scalatest.{BeforeAndAfterAll, TryValues}
+import org.scalatest.{AppendedClues, BeforeAndAfterAll, TryValues}
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.Checkers
 import pl.jozwik.quillgeneric.model.AddressId
@@ -27,7 +27,7 @@ object AbstractSpec {
   val defaultNamingStrategy: NamingStrategy = Strategy.namingStrategy
 }
 
-trait AbstractSpec extends AnyWordSpecLike with TryValues with TimeLimitedTests with Spec with Matchers with BeforeAndAfterAll {
+trait AbstractSpec extends AnyWordSpecLike with TryValues with TimeLimitedTests with Spec with Matchers with BeforeAndAfterAll with AppendedClues {
 
   protected val now: Instant             = Instant.now().truncatedTo(ChronoUnit.SECONDS)
   protected val today: LocalDate         = LocalDate.now

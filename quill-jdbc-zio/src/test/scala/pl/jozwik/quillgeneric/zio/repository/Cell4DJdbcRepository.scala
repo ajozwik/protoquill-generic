@@ -49,6 +49,11 @@ final class Cell4DJdbcRepository[+D <: SqlIdiom, +N <: NamingStrategy, C <: ZioJ
       }
     }
 
+  override def filtersByKeys(values: Map[String, Any]): Task[Seq[Cell4d]] = {
+    inline def q = quoteQuery.filterByKeys(values)
+    run(q)
+  }
+
   override def read(id: Cell4dId): Task[Option[Cell4d]] =
     for {
       seq <- run(find(id))

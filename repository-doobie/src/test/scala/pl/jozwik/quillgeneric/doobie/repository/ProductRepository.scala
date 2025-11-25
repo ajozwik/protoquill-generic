@@ -3,8 +3,8 @@ package pl.jozwik.quillgeneric.doobie.repository
 import doobie.*
 import io.getquill.*
 import io.getquill.context.sql.idiom.SqlIdiom
-import pl.jozwik.quillgeneric.doobie.{DoobieJdbcContextWithDateQuotes, DoobieRepositoryWithTransactionWithGeneratedId}
-import pl.jozwik.quillgeneric.model.{Product, ProductId}
+import pl.jozwik.quillgeneric.doobie.{ DoobieJdbcContextWithDateQuotes, DoobieRepositoryWithTransactionWithGeneratedId }
+import pl.jozwik.quillgeneric.model.{ Product, ProductId }
 
 final class ProductRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C <: DoobieJdbcContextWithDateQuotes[Dialect, Naming]](
     protected val context: C
@@ -48,6 +48,15 @@ final class ProductRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy, C
       } yield {
         id
       }
+    }
+  }
+
+  override def filtersByKeys(values: Map[String, Any]): ConnectionIO[Seq[Product]] = {
+    inline def q = quoteQuery.filterByKeys(values)
+    for {
+      all <- run(q)
+    } yield {
+      all
     }
   }
 

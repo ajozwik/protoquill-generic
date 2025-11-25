@@ -2,7 +2,7 @@ package pl.jozwik.quillgeneric.model
 
 import pl.jozwik.quillgeneric.DateTimeHelper
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.{ LocalDate, LocalDateTime }
 import pl.jozwik.quillgeneric.repository.WithId
 
 object PersonId {
@@ -17,5 +17,5 @@ final case class Person(
     lastName: String,
     birthDate: LocalDate,
     addressId: Option[AddressId] = Option(AddressId.empty),
-    createDateTime: Option[LocalDateTime] = Option(DateTimeHelper.localDateTimeNow)
+    createDateTime: Option[LocalDateTime] = Option(DateTimeHelper.localDateTimeNowTruncateToSecond)
 ) extends WithId[PersonId]

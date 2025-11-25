@@ -47,6 +47,11 @@ final class ProductGenRepository[+Dialect <: SqlIdiom, +Naming <: NamingStrategy
     }
   }
 
+  override def filtersByKeys(values: Map[String, Any]): Task[Seq[Product]] = {
+    inline def q = quoteQuery.filterByKeys(values)
+    run(q)
+  }
+
   override def read(id: ProductId): Task[Option[Product]] =
     for {
       seq <- run(find(id))
