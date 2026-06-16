@@ -1,3 +1,5 @@
 #!/bin/bash
 
-PATH=$HOME/bin:$PATH sbt -Dquill.macro.log=false clean test publishLocalSigned publishSigned sonatypeRelease
+#sbt -Dquill.macro.log=false clean test publishLocalSigned publishSigned sonaUpload sonaRelease
+
+sbt -Dquill.macro.log=false publishLocalSigned publishSigned sonaUpload sonaRelease

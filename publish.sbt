@@ -1,3 +1,15 @@
+val organizationUrl = "https://github.com/ajozwik"
+val projectUrl = s"$organizationUrl/protoquill-generic"
+
+ThisBuild / organizationHomepage := Option(url(organizationUrl))
+
+ThisBuild / scmInfo := Option(
+  ScmInfo(
+    url(projectUrl),
+    "scm:git@github.com:ajozwik/protoquill-generic.git"
+  )
+)
+
 ThisBuild / developers := List(
   Developer(
     id = "ajozwik",
@@ -7,25 +19,21 @@ ThisBuild / developers := List(
   )
 )
 
-ThisBuild / publishTo := sonatypePublishTo.value
-
-Test / publishArtifact := false
+ThisBuild / description := "Generic repository for protoquill"
 
 ThisBuild / licenses := Seq("MIT License" -> url("http://www.opensource.org/licenses/mit-license.php"))
 
-val organizationUrl = "https://github.com/ajozwik"
-
-val projectUrl = s"$organizationUrl/protoquill-generic"
-
-ThisBuild / scmInfo := Option(
-  ScmInfo(
-    url(projectUrl),
-    "scm:git@github.com:ajozwik/protoquill-generic.git"
-  )
-)
-
-ThisBuild / organizationHomepage := Option(url(organizationUrl))
-
 ThisBuild / homepage := Option(url(projectUrl))
+
+ThisBuild / pomIncludeRepository := { _ => false }
+ThisBuild / publishMavenStyle := true
+
+ThisBuild / publishTo := {
+  val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
+  if (isSnapshot.value) Option("central-snapshots" at centralSnapshots)
+  else localStaging.value
+}
+
+Test / publishArtifact := false
 
 ThisBuild / versionScheme := Option("semver-spec")
