@@ -36,22 +36,22 @@ ThisBuild / scalacOptions ++= Seq(
 
 ThisBuild / javacOptions ++= Seq("-Xlint:deprecation", "-Xdiags:verbose", "-source", targetJdk, "-target", targetJdk)
 
-val `ch.qos.logback_logback-classic`                 = "ch.qos.logback"              % "logback-classic"  % logbackVersion
-val `com.datastax.cassandra_cassandra-driver-extras` = "org.apache.cassandra"        % "java-driver-core" % "4.19.3"
-val `com.h2database_h2`                              = "com.h2database"              % "h2"               % "2.4.240"
-val `com.typesafe.scala-logging_scala-logging`       = "com.typesafe.scala-logging" %% "scala-logging"    % "3.9.6"
-val `dev.zio_zio-interop-cats`                       = "dev.zio"                    %% "zio-interop-cats" % zioInteropCatsVersion
-val `io.getquill_quill-cassandra`                    = "io.getquill"                %% "quill-cassandra"  % quillVersion
-val `io.getquill_quill-doobie`                       = "io.getquill"                %% "quill-doobie"     % quillVersion
-val `io.getquill_quill-jdbc-zio`                     = "io.getquill"                %% "quill-jdbc-zio"   % quillVersion
-val `io.getquill_quill-jdbc`                         = "io.getquill"                %% "quill-jdbc"       % quillVersion
-val `io.getquill_quill-sql`                          = "io.getquill"                %% "quill-sql"        % quillVersion
-val `org.cassandraunit_cassandra-unit`               = "org.cassandraunit"           % "cassandra-unit"   % "4.3.1.0"
-val `org.scalacheck_scalacheck`                      = "org.scalacheck"             %% "scalacheck"       % "1.19.0"
-val `org.scalatest_scalatest`                        = "org.scalatest"              %% "scalatest"        % scalaTestVersion
-val `org.scalatestplus_scalacheck`                   = "org.scalatestplus"          %% "scalacheck-1-19"  % s"$scalaTestVersion.0"
-val `org.tpolecat_doobie-h2`                         = "org.tpolecat"               %% "doobie-h2"        % "1.0.0-RC5"
-val `org.typelevel_cats-core`                        = "org.typelevel"              %% "cats-core"        % "2.13.0"
+val `ch.qos.logback_logback-classic`           = "ch.qos.logback"              % "logback-classic"  % logbackVersion
+val `org.apache.cassandra_java-driver-core`    = "org.apache.cassandra"        % "java-driver-core" % "4.19.3"
+val `com.h2database_h2`                        = "com.h2database"              % "h2"               % "2.4.240"
+val `com.typesafe.scala-logging_scala-logging` = "com.typesafe.scala-logging" %% "scala-logging"    % "3.9.6"
+val `dev.zio_zio-interop-cats`                 = "dev.zio"                    %% "zio-interop-cats" % zioInteropCatsVersion
+val `io.getquill_quill-cassandra`              = "io.getquill"                %% "quill-cassandra"  % quillVersion
+val `io.getquill_quill-doobie`                 = "io.getquill"                %% "quill-doobie"     % quillVersion
+val `io.getquill_quill-jdbc-zio`               = "io.getquill"                %% "quill-jdbc-zio"   % quillVersion
+val `io.getquill_quill-jdbc`                   = "io.getquill"                %% "quill-jdbc"       % quillVersion
+val `io.getquill_quill-sql`                    = "io.getquill"                %% "quill-sql"        % quillVersion
+val `org.cassandraunit_cassandra-unit`         = "org.cassandraunit"           % "cassandra-unit"   % "4.3.1.0"
+val `org.scalacheck_scalacheck`                = "org.scalacheck"             %% "scalacheck"       % "1.19.0"
+val `org.scalatest_scalatest`                  = "org.scalatest"              %% "scalatest"        % scalaTestVersion
+val `org.scalatestplus_scalacheck`             = "org.scalatestplus"          %% "scalacheck-1-19"  % s"$scalaTestVersion.0"
+val `org.tpolecat_doobie-h2`                   = "org.tpolecat"               %% "doobie-h2"        % "1.0.0-RC5"
+val `org.typelevel_cats-core`                  = "org.typelevel"              %% "cats-core"        % "2.13.0"
 
 publish / skip := true
 
@@ -84,8 +84,8 @@ lazy val `repository-cassandra` = projectWithName("repository-cassandra", file("
   .settings(
     libraryDependencies ++= Seq(
       `io.getquill_quill-cassandra`,
-      `org.cassandraunit_cassandra-unit`               % Test,
-      `com.datastax.cassandra_cassandra-driver-extras` % Test
+      `org.cassandraunit_cassandra-unit`      % Test,
+      `org.apache.cassandra_java-driver-core` % Test
     )
   )
   .dependsOn(`repository-monad`)
