@@ -1,6 +1,5 @@
 package pl.jozwik.quillgeneric.cassandra.sync
 
-import org.scalatest.TryValues.*
 import pl.jozwik.quillgeneric.cassandra.model.{ Address, AddressId }
 import pl.jozwik.quillgeneric.cassandra.sync.repository.AddressRepository
 import io.getquill.*

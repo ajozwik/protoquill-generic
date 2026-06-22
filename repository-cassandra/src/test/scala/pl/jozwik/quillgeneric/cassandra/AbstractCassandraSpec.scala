@@ -1,5 +1,6 @@
 package pl.jozwik.quillgeneric.cassandra
 
+import com.datastax.oss.driver.api.core.CqlSession
 import org.cassandraunit.CQLDataLoader
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper
@@ -11,7 +12,7 @@ trait AbstractCassandraSpec extends AbstractSpec with BeforeAndAfterAll {
   sys.props.put("quill.binds.log", true.toString)
   protected def createAddress(id: AddressId) = Address(id, "country", "city")
 
-  protected lazy val session = {
+  protected lazy val session: CqlSession = {
     EmbeddedCassandraServerHelper.startEmbeddedCassandra()
     EmbeddedCassandraServerHelper.getSession
   }
