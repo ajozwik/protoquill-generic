@@ -21,7 +21,7 @@ ThisBuild / developers := List(
 
 ThisBuild / description := "Generic repository for protoquill"
 
-ThisBuild / licenses := Seq("MIT License" -> url("http://www.opensource.org/licenses/mit-license.php"))
+ThisBuild / licenses := Seq("MIT License" -> url("https://www.opensource.org/licenses/mit-license.php"))
 
 ThisBuild / homepage := Option(url(projectUrl))
 
